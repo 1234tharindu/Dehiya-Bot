@@ -2,23 +2,23 @@ const fishes = require('../../JSON/fishes.json');
 let db = require('quick.db');
 const ms = require("parse-ms");
 const { randomRange } = require('../../functions');
-const { MessageEmbed } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 
 module.exports = {
-    
-        name: 'fish',
-        aliases: ['catchfish'],
-        category: 'economy',
-        description: 'Catch A Fish From A Vast Ocean',
-        usage: '[list | rewards] (optional)',
-        acessableby: 'everyone'
+
+    name: 'fish',
+    aliases: ['catchfish'],
+    category: 'economy',
+    description: 'Catch A Fish From A Vast Ocean',
+    usage: '[list | rewards] (optional)',
+    acessableby: 'everyone'
     ,
     run: async (bot, message, args) => {
 
         let user = message.author;
 
         let bal = db.fetch(`money_${user.id}`)
-   
+
         let fish = await db.fetch(`fish_${user.id}`)
         if (!args[0]) {
             if (bal === null) bal = 0;
@@ -41,13 +41,13 @@ module.exports = {
             if (fishtime !== null && timeout - (Date.now() - fishtime) > 0) {
                 let time = ms(timeout - (Date.now() - fishtime));
 
-                let timeEmbed = new MessageEmbed()
+                let timeEmbed = new EmbedBuilder()
                     .setColor("GREEN")
                     .setDescription(`❌ You've Recently Casted A Line\n\nFish Again in ${time.minutes}m ${time.seconds}s `);
                 return message.channel.send(timeEmbed)
             }
 
-            let embed = new MessageEmbed()
+            let embed = new EmbedBuilder()
                 .setColor('GREEN')
                 .setDescription(`**🎣 You Cast Out Your Line And Caught A ${fishh.symbol}, I Bet It'd Sell For Around ${worth}**!`)
             message.channel.send(embed);
@@ -58,7 +58,7 @@ module.exports = {
         }
         if (args[0] === 'list' || args[0] === 'rewards') {
 
-            let lEmbed = new MessageEmbed()
+            let lEmbed = new EmbedBuilder()
                 .setColor('GREEN')
                 .setTitle(`List Of Fish Names And Rewards You Can Get`)
                 .setDescription(`

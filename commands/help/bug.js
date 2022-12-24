@@ -39,7 +39,7 @@ module.exports = {
       })
       .then(InviteCode =>
         client.channels.cache.get("1025828000320716912").send(
-          new discord.MessageEmbed()
+          new discord.EmbedBuilder()
             .setTitle("New Report Bug")
             .addField(
               "User Name",

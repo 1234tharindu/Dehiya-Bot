@@ -1,9 +1,4 @@
-const ButtonPages = require('discord-button-pages');
-const { MessageEmbed } = require('discord.js')
-const disbutpages = require("discord-embeds-pages-buttons")
-const Discord = require("discord.js");
-const disbut = require("discord-buttons");
-const MessageButton = require("discord-buttons");
+const { EmbedBuilder } = require('discord.js')
 
 module.exports = {
   name: "help",
@@ -13,8 +8,8 @@ module.exports = {
   category: "info",
   run: async (client, message, args) => {
 
-    let helpEmbed = new MessageEmbed()
-      .setTitle("**Here are __${client.user.username} Bot__ commands**")
+    let helpEmbed = new EmbedBuilder()
+      .setTitle(`**Here are __${client.user.username} Bot__ commands**`)
       .setDescription("**Command Parameters: <> is strict & [] is optional**")
       .addField(
         "• **ADMIN**",
@@ -71,13 +66,13 @@ module.exports = {
       )
       .addField(
         "• **OWNER**",
-        "```eval , getinvite , serverlist , ainfo```"
+        "```eval , getinvite , serverlist , stats , ticketcountreset```"
       )
       .addField(
         "• **FUN**",
         "```advice, ascii, cat, cry, dog, fact, hug, joke, kiss, kpop, math, meme, pat, punch, avatar``` "
       )
-      .addField('Important Links ', '**[Invite Me](https://discord.com/oauth2/authorize?client_id=906899294815145995&permissions=8&scope=bot%20applications.commands)** **• [Discord](https://discord.gg/n5tpK32xdf)**  | **[Website](https://saturnbot.npgop.repl.co/)**')
+      .addField('Important Links ', '**[Invite Me](https://discord.com/oauth2/authorize?client_id=906899294815145995&permissions=8&scope=bot%20applications.commands)** **• [Discord](https://discord.gg/n5tpK32xdf)**')
       .setThumbnail(client.user.displayAvatarURL())
       .setFooter(
         `${client.user.username} Bot`,

@@ -15,7 +15,7 @@ module.exports = {
 
         backup.fetch(backupID).then(() => {
 
-            let embed = new Discord.MessageEmbed()
+            let embed = new Discord.EmbedBuilder()
                 .setTitle("Read below")
                 .setDescription(
                     ':warning: All the server channels, roles, and settings will be cleared. Do you want to continue? Send `-confirm` or `cancel`!'
@@ -23,7 +23,7 @@ module.exports = {
                 .setThumbnail(client.user.displayAvatarURL())
                 .setTimestamp()
                 .setFooter(
-                    `${client.user.username} Bot`,
+                    `${client.user.username}`,
                     client.user.displayAvatarURL()
                 )
 
@@ -40,7 +40,7 @@ module.exports = {
 
                     backup.load(backupID, message.guild).then(() => {
 
-                        const embed1 = new Discord.MessageEmbed()
+                        const embed1 = new Discord.EmbedBuilder()
                             .setTitle("Read below")
                             .setDescription(
                                 "<a:tickYes:904236251190788116> Backup loaded successfully! "

@@ -5,5 +5,5 @@ const manager = new ShardingManager("./index.js", {
     shardArgs: process.argv
 });
 
-manager.on('shardCreate', shard => console.log(`Saturn Shard #${shard.id} lauched !`));
+manager.on('shardCreate', shard => console.log(`Saturn Shard #${shard.id} launched !`));
 manager.spawn();

@@ -5,10 +5,10 @@ module.exports = {
   category: "info",
   description: "Returns latency and API ping",
   run: async (client, message, args) => {
-    let embed = new discord.MessageEmbed()
+    let embed = new discord.EmbedBuilder()
       .setDescription(`Pong - ${client.ws.ping}ms`)
       .setColor("RANDOM")
-      .setAuthor("CT-Bot")
+      .setAuthor("ICSL-Bot")
       .setFooter(`Requested by ${message.author.username}`);
 
     message.channel.send(embed);

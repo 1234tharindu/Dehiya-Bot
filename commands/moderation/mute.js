@@ -1,4 +1,4 @@
-const { MessageEmbed } = require("discord.js");
+const { EmbedBuilder } = require("discord.js");
 
 module.exports = {
   name: "mute",
@@ -34,7 +34,7 @@ module.exports = {
     if (!muterole) {
       return message.channel.send("\```please create role name with muted \``` ");
     }
-    
+
     await user.roles.remove(vrole);
     await user.roles.add(muterole);
 

@@ -23,7 +23,7 @@ module.exports = {
         }
       ])
       .then(src => {
-        let embed = new discord.MessageEmbed()
+        let embed = new discord.EmbedBuilder()
           .setTitle(`Hastebin`)
           .setColor("RANDOM")
           .setDescription(`Code:\n${Content}\n\n**[Click Here](${src.url})**`);

@@ -4,13 +4,13 @@ const Discord = require('discord.js');
 
 
 module.exports = {
-  
-        name:"invites",
-        aliases: ["invs"],
-        category: "info",
-        accessableby: ""
+
+    name: "invites",
+    aliases: ["invs"],
+    category: "info",
+    accessableby: ""
     ,
- run: async (bot, message, args) => {
+    run: async (bot, message, args) => {
         try {
             let member = await message.mentions.members.first() || message.guild.members.cache.get(args[0]) || message.guild.members.cache.find(r => r.user.username.toLowerCase() === args.join(' ').toLocaleLowerCase()) || message.guild.members.cache.find(r => r.displayName.toLowerCase() === args.join(' ').toLocaleLowerCase()) || message.member;
 
@@ -20,13 +20,14 @@ module.exports = {
 
             if (memberInvites.size <= 0) {
                 return message.channel.send(`**${member.displayName} didn't invite anyone to the server!**`, (member === message.member ? null : member));
-  {}          }
+                { }
+            }
 
             let content = memberInvites.map(i => i.code).join("\n");
             let index = 0;
             memberInvites.forEach(invite => index += invite.uses);
 
-            let embed = new Discord.MessageEmbed()
+            let embed = new Discord.EmbedBuilder()
                 .setColor("GREEN")
                 .setFooter(message.guild.name, message.guild.iconURL())
                 .setAuthor(`Invite Tracker for ${message.guild.name}`)

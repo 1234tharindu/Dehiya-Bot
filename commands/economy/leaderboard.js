@@ -1,19 +1,19 @@
-const { MessageEmbed } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 const db = require('quick.db');
 
 module.exports = {
-  
-        name: "leaderboard",
-        aliases: ['lb'],
-        category: 'economy',
-        description: 'Shows Server\'s Top 10 Users of Economy Leaderboard',
-        usage: ' ',
-        accessableby: "everyone"
+
+    name: "leaderboard",
+    aliases: ['lb'],
+    category: 'economy',
+    description: 'Shows Server\'s Top 10 Users of Economy Leaderboard',
+    usage: ' ',
+    accessableby: "everyone"
     ,
     run: async (bot, message, args) => {
         let money = db.all().filter(data => data.ID.startsWith(`money_`)).sort((a, b) => b.data - a.data);
         if (!money.length) {
-            let noEmbed = new MessageEmbed()
+            let noEmbed = new EmbedBuilder()
                 .setAuthor(message.member.displayName, message.author.displayAvatarURL())
                 .setColor("GREEN")
                 .setFooter("Nothing To See Here Yet!")
@@ -27,7 +27,7 @@ module.exports = {
             finalLb += `**${money.indexOf(money[i]) + 1}. ${bot.users.cache.get(money[i].ID.split('_')[1]) ? bot.users.cache.get(money[i].ID.split('_')[1]).tag : "Unknown User#0000"}** - ${money[i].data} :dollar:\n`;
         };
 
-        const embed = new MessageEmbed()
+        const embed = new EmbedBuilder()
             .setTitle(`Leaderboard Of ${message.guild.name}`)
             .setColor("GREEN")
             .setDescription(finalLb)

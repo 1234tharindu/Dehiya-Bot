@@ -16,7 +16,7 @@ module.exports = {
 
     malScraper.getInfoFromName(search)
       .then((data) => {
-        const malEmbed = new Discord.MessageEmbed()
+        const malEmbed = new Discord.EmbedBuilder()
           .setAuthor(`My Anime List search result for ${args}`.split(',').join(' '))
           .setThumbnail(data.picture)
           .setColor('RANDOM') //What ever u want color!
@@ -43,7 +43,7 @@ module.exports = {
           .addField('Identifier', `\`${data.id}\``, true)
           .addField('Link', data.url, true)
           .setTimestamp()
-          .setFooter(`Requested ${message.member.displayName}`,  message.author.displayAvatarURL({ dynamic: true }))
+          .setFooter(`Requested ${message.member.displayName}`, message.author.displayAvatarURL({ dynamic: true }))
 
         message.channel.send(malEmbed);
 

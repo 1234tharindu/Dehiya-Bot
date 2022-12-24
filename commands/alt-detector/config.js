@@ -17,7 +17,7 @@ module.exports = {
       return message.channel.send(`**You Dont Have Permission To Use This Command**`)
     }
 
-    const config = new Discord.MessageEmbed()
+    const config = new Discord.EmbedBuilder()
       .setTitle(`CONFIG`)
       .setDescription(`
 ✨ \`s!config logChannel\` - ( **__Sets The logging Channel__** )
@@ -26,6 +26,7 @@ __VARIABLES__
 ✨ \`s!config errorlogChannel\` - ( **__Sets The Error logging Channel__** )
 __VARIABLES__
 \`s!config errorlogchannel #alt-notify\`
+✨ \`s!config ticketchannel\` - ( **__Sets The Ticket Channel__** )
 __VARIABLES__
 \`s!config ticketchannel #alt-notify\`
 ✨ \`s!config notifyRole\` - ( **__Sets The Notify Role__** )
@@ -68,7 +69,7 @@ __VARIABLES__
 
       var guildicon = message.guild.iconURL();
 
-      const succes = new Discord.MessageEmbed()
+      const succes = new Discord.EmbedBuilder()
         .setTitle(`Alt Logging Channel has been Setted!`)
         .setDescription(`New Channel is ${LoggingChannel}`)
         .setThumbnail(guildicon)
@@ -91,7 +92,7 @@ __VARIABLES__
 
       var guildicon = message.guild.iconURL();
 
-      const succes = new Discord.MessageEmbed()
+      const succes = new Discord.EmbedBuilder()
         .setTitle(`Ticket Channel has been Setted!`)
         .setDescription(`New Channel is ${TicketChannel}`)
         .setThumbnail(guildicon)
@@ -114,7 +115,7 @@ __VARIABLES__
 
       var guildicon = message.guild.iconURL();
 
-      const succes = new Discord.MessageEmbed()
+      const succes = new Discord.EmbedBuilder()
         .setTitle(`Error Logging Channel has been Setted!`)
         .setDescription(`New Channel is ${ErrorLoggingChannel}`)
         .setThumbnail(guildicon)
@@ -137,7 +138,7 @@ __VARIABLES__
 
       var guildicon = message.guild.iconURL();
 
-      const succes = new Discord.MessageEmbed()
+      const succes = new Discord.EmbedBuilder()
         .setTitle(`Alt Notify Role has been setted`)
         .setDescription(`New Role is ${notifyRole}`)
         .setThumbnail(guildicon)
@@ -163,13 +164,13 @@ __VARIABLES__
       }
       var guildicon = message.guild.iconURL();
 
-      const succes = new Discord.MessageEmbed()
+      const succes = new EmbedBuilder()
         .setTitle(`AltAge has been Setted!`)
         .setDescription(`New AltAge is \`${altage}\` Days`)
         .setThumbnail(guildicon)
         .setFooter("Bot Made By ! Chirath#5959");
 
-      message.channel.send(succes);
+      message.channel.send({ embeds: [succes] });
 
       db.delete(`altAge_${message.guild.id}`)
       db.set(`altAge_${message.guild.id}`, altage)
@@ -180,7 +181,6 @@ __VARIABLES__
       if (args[0] === "enable") {
 
         db.set(`AutoKick_${message.guild.id}`, true)
-        db.delete(`AutoKickAge_${message.guild.id}`)
         db.set(`AutoKickAge_${message.guild.id}`, 8)
         message.channel.send(`**AutoKick Has Been __Enabled__** \nAutokick Age is \`8\` Days By Default`)
 
@@ -201,7 +201,7 @@ __VARIABLES__
         }
         var guildicon = message.guild.iconURL();
 
-        const succes = new Discord.MessageEmbed()
+        const succes = new Discord.EmbedBuilder()
           .setTitle(`AutoKick Age has been Setted!`)
           .setDescription(`New AltAge is \`${autokickage}\` Days`)
           .setThumbnail(guildicon)
@@ -226,7 +226,7 @@ __VARIABLES__
       db.delete(`WhiteListed_${message.guild.id}`)
       db.set(`WhiteListed_${message.guild.id}`, Whitelist)
 
-      let whitelisted = new Discord.MessageEmbed()
+      let whitelisted = new Discord.EmbedBuilder()
         .setTitle(`NEW WHITELIST USER SETTED`)
         .setDescription(`
     __Some Details About User__

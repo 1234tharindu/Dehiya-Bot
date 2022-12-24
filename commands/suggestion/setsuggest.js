@@ -1,5 +1,5 @@
 const Discord = require("discord.js");
-const { MessageEmbed } = require("discord.js");
+const { EmbedBuilder } = require("discord.js");
 const db = require("quick.db");
 
 module.exports = {
@@ -8,7 +8,7 @@ module.exports = {
     usage: "setsuggest <#channel>",
     authorPermission: ["MANAGE_GUILD"],
     run: async (client, message, args) => {
-if (!message.member.hasPermission("MANAGE_GUILD")) {
+        if (!message.member.hasPermission("MANAGE_GUILD")) {
             return message.channel.send(`You Don't Have Permission To Use This Command! Manage server`)
         }
         let Channel = message.mentions.channels.first() || message.guild.channels.cache.get(args[0]);
@@ -19,9 +19,9 @@ if (!message.member.hasPermission("MANAGE_GUILD")) {
 
         await db.set(`suggestion_${message.guild.id}`, Channel.id);
 
-        let Embed = new MessageEmbed()
-        .setColor("00FFFF")
-        .setDescription(`Suggestion Channel is setted as <#${Channel.id}>`)
+        let Embed = new EmbedBuilder()
+            .setColor("00FFFF")
+            .setDescription(`Suggestion Channel is setted as <#${Channel.id}>`)
 
         return message.channel.send(Embed);
 

@@ -1,5 +1,5 @@
 const axios = require('axios')
-const { MessageEmbed } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 module.exports = {
     name: "ig",
     category: "search",
@@ -17,7 +17,7 @@ module.exports = {
             return message.channel.send(`Not A Account`)
         }
 
-        const embed = new MessageEmbed()
+        const embed = new EmbedBuilder()
             .setTitle(`${details.is_verified ? `${details.username} <a:verified:727820439497211994>` : ` ${details.username}`} ${details.is_private ? '🔒' : ''} `)
             .setDescription(details.biography)
             .setThumbnail(details.profile_pic_url)

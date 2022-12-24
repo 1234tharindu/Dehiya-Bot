@@ -1,5 +1,5 @@
 const Discord = require("discord.js");
-const { MessageEmbed } = require("discord.js");
+const { EmbedBuilder } = require("discord.js");
 const Color = `RANDOM`;
 const Fetch = require("node-fetch"); //Install Node-fetch - npm i node-fetch
 
@@ -30,7 +30,7 @@ module.exports = {
 
         const data = json[0].data.children[0].data;
 
-        const Embed = new MessageEmbed()
+        const Embed = new EmbedBuilder()
             .setColor(Color)
             .setURL(`https://reddit.com${data.permalink}`)
             .setTitle(data.title)
