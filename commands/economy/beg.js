@@ -1,15 +1,15 @@
-const { MessageEmbed } = require("discord.js");
+const { EmbedBuilder } = require("discord.js");
 const db = require("quick.db");
 const ms = require("parse-ms");
 
 module.exports = {
- 
-        name: "beg",
-        noalias: [""],
-        category: "economy",
-        description: "Beg for money",
-        usage: " ",
-        accessableby: "everyone"
+
+    name: "beg",
+    noalias: [""],
+    category: "economy",
+    description: "Beg for money",
+    usage: " ",
+    accessableby: "everyone"
     ,
     run: async (bot, message, args) => {
         let user = message.author;
@@ -22,12 +22,12 @@ module.exports = {
         if (beg !== null && timeout - (Date.now() - beg) > 0) {
             let time = ms(timeout - (Date.now() - beg));
 
-            let timeEmbed = new MessageEmbed()
+            let timeEmbed = new EmbedBuilder()
                 .setColor("GREEN")
                 .setDescription(`❌ You've already begged recently\n\nBeg again in ${time.minutes}m ${time.seconds}s `);
             message.channel.send(timeEmbed)
         } else {
-            let moneyEmbed = new MessageEmbed()
+            let moneyEmbed = new EmbedBuilder()
                 .setColor("GREEN")
                 .setDescription(`✅ You've begged and received ${amount} coins`);
             message.channel.send(moneyEmbed)

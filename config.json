@@ -1,48 +1,27 @@
 {
-  
-  "default_prefix": "ct",
-    "owners": ["852219497763045398" , "771639970854731808"],   
-    
-   "guildid": "885791620878983220",
-   "emoji": {
-        "play": "▶️",
-        "stop": "⏹️",
-        "queue": "📄",
-        "success": "☑️",
-        "repeat": "🔁",
-        "error": "❌",
- "YOUTUBE_API_KEY": "AIzaSyBh3IuBJGuNTYp70xeMSUpOBMmW2S5gFSA",
- "premium": "682981714523586606",
- "PREFIX": "s!",
- "mongodb": "mongodb+srv://5h3ld0r:Timodh1@@cluster0.cfpkpjq.mongodb.net/?retryWrites=true&w=majority",
- "database": "",
- "BOT_ID": "946983229674647552",
+  "default_prefix": "c!",
+  "owners":"771639970854731808",
 
+  "guildId": "885791620878983220",
+  "staffChat": "916339886225772575",
+  "ticketMsgId": "1040902840115265577",
+  "ticketArea": "1040247302855598140",
+  "reactionMsgId": "1040223122890162177",
+  "mainVoiceCategory": "885791621654913056",
+  "mainVoiceChannel": "897617688703139892",
+  "reactionChannelId": "946774339380989962",
+  "internshipsChannel": "1040573817170432060",
+  "serverStatsChannel": "946738562676699216",
 
- "clientId":"946983229674647552",
- "parentOpened": "958677720278114304" ,
- "parentTransactions": "958677720278114304",
- "parentJeux": "958677720278114304",
- "parentAutres": "958677720278114304",
-
-
- "roleSupport": "946735889533513798",
-
- 
- "logsTicket": "951015250990366740",
- "ticketChannel": "958680918720151572",
- 
-
-
- "ERROR_LOGS_CHANNEL": "1020701827869716501" ,
- "embedcolor": "BLUE",
- "COOLDOWN": "3",
- "EMOJI_ARROW":"🔄",
- "WELCOME_CHANNEL": "946737933833089044",
-    "QUEUE_LIMIT": 2,
-    "owners": "682981714523586606",
+  "emoji": {
+    "play": "▶️",
+    "stop": "⏹️",
+    "queue": "📄",
+    "success": "☑️",
+    "repeat": "🔁",
+    "error": "❌",
+    "YOUTUBE_API_KEY": "AIzaSyBh3IuBJGuNTYp70xeMSUpOBMmW2S5gFSA",
     "AME_API": "36d73cb74451722a36fe5321526fa29649bdc850444fea8269e6f21276ece44925ae934dd478a803886f53420dfe3e3498f7dc3d0380e278a60d2f50cdc92e72",
-    "COLOR": "00FFFF",
-    "mongourl": "mongodb+srv://5h3ld0r:Timodh1@@cluster0.cfpkpjq.mongodb.net/?retryWrites=true&w=majority"
-}
+    "COLOR": "00FFFF"
+  }
 }

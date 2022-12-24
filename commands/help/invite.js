@@ -3,21 +3,20 @@ const discord = require("discord.js");
 module.exports = {
   name: "invite",
   category: "info",
-  description: "INVITE CT Bot",
+  description: `INVITE Bot`,
   run: async (client, message, args) => {
 
-    let embed = new discord.MessageEmbed()
+    let embed = new discord.EmbedBuilder()
       .setTitle(`Invite Me`)
       .setDescription(`• [Invite Me](https://discord.com/oauth2/authorize?client_id=906899294815145995&permissions=8&scope=bot%20applications.commands)`)
-      .setColor("RANDOM")
+      .setColor("Random")
       .setThumbnail(client.user.displayAvatarURL())
-      .setFooter(
-        `CT Bot`,
-        client.user.displayAvatarURL(),
-        message.delete()
-      );
+      .setFooter({
+        text: `${client.user.username}`,
+        iconURL: client.user.displayAvatarURL()
+      });
 
-    message.channel.send(embed)
+    message.channel.send({ embeds: [embed] })
 
 
   }

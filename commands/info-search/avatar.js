@@ -1,5 +1,5 @@
 const Discord = require("discord.js");
-const { MessageEmbed } = require("discord.js");
+const { EmbedBuilder } = require("discord.js");
 const { Color } = require("../../config.json");
 
 module.exports = {
@@ -14,7 +14,7 @@ module.exports = {
 
     let Member = message.mentions.users.first() || message.guild.member(args[0]) || message.author;
 
-    let embed = new Discord.MessageEmbed()
+    let embed = new Discord.EmbedBuilder()
       .setColor(Color)
       .addField(
         "Links",

@@ -2,11 +2,11 @@ const Discord = require("discord.js");
 const ownerid = "771639970854731808";
 
 module.exports = {
-    name: "serverlist",
-    aliases: ["slt"],
-    category: "owner",
-    description: "Displays the list of Servers!",
-    usage: " ",
+  name: "serverlist",
+  aliases: ["slt"],
+  category: "owner",
+  description: "Displays the list of Servers!",
+  usage: " ",
 
   run: async (bot, message, args) => {
     if (message.author.id == ownerid) {
@@ -28,9 +28,9 @@ module.exports = {
           .slice(0, 10)
           .join("\n\n");
 
-      let embed = new Discord.MessageEmbed()
-        .setAuthor(bot.user.tag, bot.user.displayAvatarURL({dynamic : true}))
-        
+      let embed = new Discord.EmbedBuilder()
+        .setAuthor(bot.user.tag, bot.user.displayAvatarURL({ dynamic: true }))
+
         .setColor("00FFFF")
         .setFooter(`Page - ${page}/${Math.ceil(bot.guilds.cache.size / 10)}`)
         .setDescription(description);

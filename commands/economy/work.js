@@ -1,17 +1,17 @@
 const db = require('quick.db')
-const { MessageEmbed } = require('discord.js')
+const { EmbedBuilder } = require('discord.js')
 const ms = require("parse-ms");
 const Jwork = require('../../JSON/works.json');
 const JworkR = Jwork[Math.floor(Math.random() * Jwork.length)];
 
 module.exports = {
-   
-        name: "work",
-        aliases: ["wr"],
-        category: "economy",
-        description: "Work to Earn Money",
-        usage: " ",
-        accessableby: "everyone"
+
+    name: "work",
+    aliases: ["wr"],
+    category: "economy",
+    description: "Work to Earn Money",
+    usage: " ",
+    accessableby: "everyone"
     ,
     run: async (bot, message, args) => {
 
@@ -23,13 +23,13 @@ module.exports = {
         if (author !== null && timeout - (Date.now() - author) > 0) {
             let time = ms(timeout - (Date.now() - author));
 
-            let timeEmbed = new MessageEmbed()
+            let timeEmbed = new EmbedBuilder()
                 .setColor("GREEN")
                 .setDescription(`❌ You have already worked recently\n\nTry again in ${time.minutes}m ${time.seconds}s `);
             message.channel.send(timeEmbed)
         } else {
             let amount = Math.floor(Math.random() * 80) + 1;
-            let embed1 = new MessageEmbed()
+            let embed1 = new EmbedBuilder()
                 .setColor("GREEN")
                 .setDescription(`✅ **${JworkR} ${amount}**`)
             message.channel.send(embed1)

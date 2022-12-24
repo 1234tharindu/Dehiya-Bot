@@ -1,13 +1,13 @@
-const { MessageEmbed } = require("discord.js");
+const { EmbedBuilder } = require("discord.js");
 const db = require("quick.db");
 
 module.exports = {
-    name: "balance",
-    aliases: ["bal"],
-    category: "economy",
-    description: "Shows Current Balance",
-    usage: "[username | nickname | mention | ID](optional)",
-    accessableby: "everyone"
+  name: "balance",
+  aliases: ["bal"],
+  category: "economy",
+  description: "Shows Current Balance",
+  usage: "[username | nickname | mention | ID](optional)",
+  accessableby: "everyone"
   ,
   run: async (bot, message, args) => {
     let user =
@@ -29,9 +29,9 @@ module.exports = {
     let bank = await db.fetch(`bank_${user.id}`);
 
     if (bank === null) bank = 0;
-let Total = bal + bank
+    let Total = bal + bank
     if (user) {
-      let moneyEmbed = new MessageEmbed()
+      let moneyEmbed = new EmbedBuilder()
         .setColor("BLUE")
         .setDescription(
           `**${user.user.username}'s Balance**\n**Cash:** ${bal}$\n**Bank:** ${bank}\n**Total:** ${Total}`

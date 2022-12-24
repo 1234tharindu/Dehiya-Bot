@@ -6,7 +6,7 @@ let db = await greetDB.findOne({ guild: message.guild.id });
         message: "[member:mention] Welcome to [guild:name]",
       });
       let m = await message.channel.send(
-        new discord.MessageEmbed()
+        new discord.EmbedBuilder()
            .setDescription(`**${message.author.tag}**`)
            .addField(
              "**<a:tickYes:904267903191351326> Enabled greet messages for this**",
@@ -27,7 +27,7 @@ let db = await greetDB.findOne({ guild: message.guild.id });
       if (!db.channel) {
         greetDB.updateOne({ guild: message.guild.id }, { channel: channel.id })
         let m = await message.channel.send(
-          new discord.MessageEmbed()
+          new discord.EmbedBuilder()
            .setDescription(`**${message.author.tag}**`)
            .addField(
              "**<a:tickYes:904267903191351326> Enabled greet messages for this**",
@@ -48,7 +48,7 @@ let db = await greetDB.findOne({ guild: message.guild.id });
       if (db.channel === channel.id) {
         guildDB.updateOne({ guild: message.guild.id }, { channel: channel.id }, function(err, res) {});
         let m = await message.channel.send(
-          new discord.MessageEmbed()
+          new discord.EmbedBuilder()
             .setDescription(`**${message.author.tag}**`)
             .addField(
               "**<:npg_cross:904267907100442636> Disabled greet messages from this**",
@@ -70,7 +70,7 @@ let db = await greetDB.findOne({ guild: message.guild.id });
         db.channel = channel.id;
         await db.save();
         let m = await message.channel.send(
-          new discord.MessageEmbed()
+          new discord.EmbedBuilder()
            .setDescription(`**${message.author.tag}**`)
            .addField(
              "**<a:tickYes:904267903191351326> Enabled greet messages for this**",

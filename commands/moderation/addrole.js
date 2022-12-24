@@ -1,16 +1,16 @@
-const { MessageEmbed } = require("discord.js");
+const { EmbedBuilder } = require("discord.js");
 const db = require('quick.db');
 
 module.exports = {
-  name: "addrole",
-  aliases: ["role", "qrole"],
-  category: "moderation",
-  description: "Add role to any user",
-run: async (bot, message, args) => {
+    name: "addrole",
+    aliases: ["role", "qrole"],
+    category: "moderation",
+    description: "Add role to any user",
+    run: async (bot, message, args) => {
 
         if (!message.member.hasPermission("MANAGE_ROLES")) return message.channel.send("**You Dont Have The Permissions To Add Roles To Users! - [MANAGE_ROLES]**");
         if (!message.guild.me.hasPermission("MANAGE_ROLES")) return message.channel.send("**I Dont Have The Permissions To Add Roles To Users! - [MANAGE_ROLES]**");
-        
+
         if (!args[0]) return message.channel.send("**Please Enter A Role!**")
 
         let rMember = message.mentions.members.first() || message.guild.members.cache.get(args[0]) || message.guild.members.cache.find(r => r.user.username.toLowerCase() === args[0].toLocaleLowerCase()) || message.guild.members.cache.find(ro => ro.displayName.toLowerCase() === args[0].toLocaleLowerCase());
@@ -27,7 +27,7 @@ run: async (bot, message, args) => {
 
         if (rMember.roles.cache.has(role.id)) return message.channel.send("**User Already Has The Role!**")
         if (!rMember.roles.cache.has(role.id)) await rMember.roles.add(role.id);
-        var sembed = new MessageEmbed()
+        var sembed = new EmbedBuilder()
             .setColor("GREEN")
             .setAuthor(message.guild.name, message.guild.iconURL())
             .setDescription(`Role has been added to ${rMember.user.username}`)
@@ -36,7 +36,7 @@ run: async (bot, message, args) => {
         let channel = db.fetch(`modlog_${message.guild.id}`)
         if (!channel) retu
 
-        const embed = new MessageEmbed()
+        const embed = new EmbedBuilder()
             .setAuthor(`${message.guild.name} Modlogs`, message.guild.iconURL())
             .setColor("#ff0000")
             .setThumbnail(rMember.user.displayAvatarURL({ dynamic: true }))

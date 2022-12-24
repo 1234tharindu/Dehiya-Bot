@@ -1,15 +1,15 @@
-const { MessageEmbed } = require("discord.js");
+const { EmbedBuilder } = require("discord.js");
 const db = require("quick.db");
 const ms = require("parse-ms");
 
 module.exports = {
-    
-        name: "daily",
-        aliases: ["coins-system"],
-        category: "economy",
-        description: "Gives You 200 per day",
-        usage: " ",
-        accessableby: "everyone"
+
+    name: "daily",
+    aliases: ["coins-system"],
+    category: "economy",
+    description: "Gives You 200 per day",
+    usage: " ",
+    accessableby: "everyone"
     ,
     run: async (bot, message, args) => {
         let user = message.author;
@@ -22,12 +22,12 @@ module.exports = {
         if (daily !== null && timeout - (Date.now() - daily) > 0) {
             let time = ms(timeout - (Date.now() - daily));
 
-            let timeEmbed = new MessageEmbed()
+            let timeEmbed = new EmbedBuilder()
                 .setColor("GREEN")
                 .setDescription(`❌ You've already collected your daily reward\n\nCollect it again in ${time.hours}h ${time.minutes}m ${time.seconds}s `);
             message.channel.send(timeEmbed)
         } else {
-            let moneyEmbed = new MessageEmbed()
+            let moneyEmbed = new EmbedBuilder()
                 .setColor("GREEN")
                 .setDescription(`✅ You've collected your daily reward of ${amount} coins`);
             message.channel.send(moneyEmbed)

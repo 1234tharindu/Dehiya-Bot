@@ -10,7 +10,7 @@ module.exports = {
   description: 'Shows bot variables',
   run: async (client, message, args) => {
     message.delete();
-    message.channel.send(new Discord.MessageEmbed()
+    message.channel.send(new Discord.EmbedBuilder()
       .setColor('RANDOM')
       .setTitle(`Variables`)
       .setThumbnail(client.user.displayAvatarURL({ dynamic: true }))

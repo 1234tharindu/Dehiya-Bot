@@ -1,4 +1,4 @@
-const { MessageEmbed } = require("discord.js");
+const { EmbedBuilder } = require("discord.js");
 const math = require("mathjs");
 const Color = `RANDOM`;
 
@@ -9,7 +9,7 @@ module.exports = {
     try {
       if (!args[0]) return message.channel.send("Please Give Me Equation!");
 
-      const embed = new MessageEmbed()
+      const embed = new EmbedBuilder()
         .setColor(`${Color}`)
         .setTitle(`Result`)
         .setDescription(math.evaluate(args.join(" ")))

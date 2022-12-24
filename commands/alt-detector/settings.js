@@ -71,7 +71,7 @@ module.exports = {
             ticketchannel = "NO CHANNEL FOUND"
         }
 
-        let embed = new discord.MessageEmbed()
+        let embed = new discord.EmbedBuilder()
             .setTitle(`CONFIG SETTINGS`)
             .setDescription(`
 __**ALT LOG CHANNEL**__ 

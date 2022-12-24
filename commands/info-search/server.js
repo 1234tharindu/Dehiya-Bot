@@ -1,4 +1,4 @@
-const { MessageEmbed } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 
 const moment = require('moment');
 
@@ -58,17 +58,17 @@ const regions = {
 
 module.exports = {
 
-  name: "serverinfo",
+	name: "serverinfo",
 
-  category: "info",
+	category: "info",
 
-  aliases: ["serverinfo"],
+	aliases: ["serverinfo"],
 
-  description: "Get info about your server.",
+	description: "Get info about your server.",
 
-  usage: "serverinfo ",
+	usage: "serverinfo ",
 
-run: (client, message, args) => {
+	run: (client, message, args) => {
 
 		const roles = message.guild.roles.cache.sort((a, b) => b.position - a.position).map(role => role.toString());
 
@@ -78,7 +78,7 @@ run: (client, message, args) => {
 
 		const emojis = message.guild.emojis.cache;
 
-		const embed = new MessageEmbed()
+		const embed = new EmbedBuilder()
 
 			.setDescription(`**Guild information for __${message.guild.name}__**`)
 
@@ -86,25 +86,25 @@ run: (client, message, args) => {
 
 			.setThumbnail(message.guild.iconURL({ dynamic: true }))
 
-      .addField('**• Owner:**', `${message.guild.owner.user.tag}`, true)
-      .addField('** • Created At**', `${moment(message.guild.createdTimestamp).format('LL')} ${moment(message.guild.createdTimestamp).fromNow()}`, true)
-      .addField('** • Roles**', ` ${roles.length}`, true)
-      .addField('** • Emojis**', ` ${emojis.size}`, true)
-      .addField('** • Boost Count**', ` ${message.guild.premiumSubscriptionCount || '0'}`, true)
-      .addField('** • Verification Level**', ` ${verificationLevels[message.guild.verificationLevel]}`, true)
-      .addField('** • Content Filter**', ` ${filterLevels[message.guild.explicitContentFilter]}`, true)
-      .addField('** • Member**', ` ${message.guild.memberCount}`, true)
-      .addField('** • Shard**', `0`, true)
-      .addField('** • Channels**', `⌨️ ${channels.filter(channel => channel.type === 'text').size}  | 🔈 ${channels.filter(channel => channel.type === 'voice').size}`, true)
-      .addField('** • Bots**', `${members.filter(member => member.user.bot).size}`, true)
+			.addField('**• Owner:**', `${message.guild.owner.user.tag}`, true)
+			.addField('** • Created At**', `${moment(message.guild.createdTimestamp).format('LL')} ${moment(message.guild.createdTimestamp).fromNow()}`, true)
+			.addField('** • Roles**', ` ${roles.length}`, true)
+			.addField('** • Emojis**', ` ${emojis.size}`, true)
+			.addField('** • Boost Count**', ` ${message.guild.premiumSubscriptionCount || '0'}`, true)
+			.addField('** • Verification Level**', ` ${verificationLevels[message.guild.verificationLevel]}`, true)
+			.addField('** • Content Filter**', ` ${filterLevels[message.guild.explicitContentFilter]}`, true)
+			.addField('** • Member**', ` ${message.guild.memberCount}`, true)
+			.addField('** • Shard**', `0`, true)
+			.addField('** • Channels**', `⌨️ ${channels.filter(channel => channel.type === 'text').size}  | 🔈 ${channels.filter(channel => channel.type === 'voice').size}`, true)
+			.addField('** • Bots**', `${members.filter(member => member.user.bot).size}`, true)
 
 
-      
 
-      .setFooter(
-           `CT Bot`,
-            client.user.displayAvatarURL()  
-      )
+
+			.setFooter(
+				`${client.user.username}`,
+				client.user.displayAvatarURL()
+			)
 			.setTimestamp();
 
 

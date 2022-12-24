@@ -1,4 +1,4 @@
-const { MessageEmbed } = require("discord.js");
+const { EmbedBuilder } = require("discord.js");
 
 module.exports = {
   name: "achievement",
@@ -7,7 +7,7 @@ module.exports = {
   category: "Image",
   run: async (client, message, args) => {
     const text = args.join("+");
-    const e = new MessageEmbed()
+    const e = new EmbedBuilder()
       .setTitle("MineCraft achievement!")
       .setImage(
         `https://minecraftskinstealer.com/achievement/12/Achievement%20Get!/${text}`

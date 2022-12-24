@@ -1,4 +1,4 @@
-const { MessageEmbed } = require("discord.js");
+const { EmbedBuilder } = require("discord.js");
 const db = require("quick.db");
 
 module.exports = {
@@ -51,20 +51,19 @@ module.exports = {
         `You have been warned in **${message.guild.name}** for ${reason}`
       );
       await message.channel.send(
-        `You warned **${
-          message.mentions.users.first().username
+        `You warned **${message.mentions.users.first().username
         }** for ${reason}`
       );
-    } else if(warnings !== null) {
-      
+    } else if (warnings !== null) {
+
       db.add(`warnings_${message.guild.id}_${user.id}`, 1);
-      
+
       user.send(`You have been warned in **${message.guild.name}** for ${reason}`);
-      
+
       await message.channel.send(`You warned **${message.mentions.users.first().username}** for ${reason}`);
-      
+
       message.delete
-      
+
     }
   }
 };

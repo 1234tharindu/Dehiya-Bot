@@ -7,24 +7,24 @@ module.exports = {
   category: "info",
   usage: "(prefix)snipe",
   description: "Get last message which is deleted with message Author and Image(If any)",
-  run:async (client, message, args) => {
-    
+  run: async (client, message, args) => {
+
     const msg = client.snipes.get(message.channel.id)
-    if(!msg) return message.channel.send("There's nothing to snipe!")
-    const embed = new Discord.MessageEmbed()
-    .setAuthor(msg.author)
-    .setDescription(msg.content)
-    if(msg.image)embed
-    .setImage(msg.image)
-    .setColor("00FFFF")
-    .setTimestamp()
-    .setFooter(
-           `CT Bot`,
-            client.user.displayAvatarURL()  
+    if (!msg) return message.channel.send("There's nothing to snipe!")
+    const embed = new Discord.EmbedBuilder()
+      .setAuthor(msg.author)
+      .setDescription(msg.content)
+    if (msg.image) embed
+      .setImage(msg.image)
+      .setColor("00FFFF")
+      .setTimestamp()
+      .setFooter(
+        `${client.user.username}`,
+        client.user.displayAvatarURL()
       )
-    
+
     message.channel.send(embed)
-   
-    
+
+
   }
 }

@@ -1,14 +1,14 @@
-const { MessageEmbed }= require("discord.js");
+const { EmbedBuilder } = require("discord.js");
 const db = require("quick.db");
 
 module.exports = {
-    
-        name: "removemoney",
-        aliases: ["rm"],
-        category: "economy",
-        description: "Removes money from a user",
-        usage: "[ mention | ID]",
-        accessableby: "Administrator, Owner"
+
+    name: "removemoney",
+    aliases: ["rm"],
+    category: "economy",
+    description: "Removes money from a user",
+    usage: "[ mention | ID]",
+    accessableby: "Administrator, Owner"
     ,
     run: async (bot, message, args) => {
         if (!message.member.hasPermission("ADMINISTRATOR", "MANAGE_GUILD")) return message.channel.send("❌ You do not have permissions to remove money!");
@@ -25,7 +25,7 @@ module.exports = {
         db.subtract(`money_${user.id}`, args[1])
         let bal2 = await db.fetch(`money_${user.id}`)
 
-        let moneyEmbed = new MessageEmbed()
+        let moneyEmbed = new EmbedBuilder()
             .setColor("GREEN")
             .setDescription(`✅ Removed ${args[1]} coins\n\nNew Balance: ${bal2}`);
         message.channel.send(moneyEmbed)
