@@ -1,6 +1,5 @@
 const { EmbedBuilder } = require("discord.js");
 const math = require("mathjs");
-const Color = `RANDOM`;
 
 module.exports = {
   name: "math",
@@ -10,12 +9,12 @@ module.exports = {
       if (!args[0]) return message.channel.send("Please Give Me Equation!");
 
       const embed = new EmbedBuilder()
-        .setColor(`${Color}`)
+        .setColor(`Random`)
         .setTitle(`Result`)
-        .setDescription(math.evaluate(args.join(" ")))
+        .setDescription(`${math.evaluate(args.join(" "))}`)
         .setTimestamp();
 
-      message.channel.send(embed);
+      message.channel.send({ embeds: [embed] });
     } catch (error) {
       message.channel.send(`Please Give Me Valid Equation | Try Again Later!`).then(() => console.log(error));
     }

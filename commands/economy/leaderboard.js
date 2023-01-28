@@ -10,29 +10,29 @@ module.exports = {
     usage: ' ',
     accessableby: "everyone"
     ,
-    run: async (bot, message, args) => {
+    run: async (client, message) => {
         let money = db.all().filter(data => data.ID.startsWith(`money_`)).sort((a, b) => b.data - a.data);
         if (!money.length) {
             let noEmbed = new EmbedBuilder()
-                .setAuthor(message.member.displayName, message.author.displayAvatarURL())
-                .setColor("GREEN")
-                .setFooter("Nothing To See Here Yet!")
-            return message.channel.send(noEmbed)
+                .setAuthor({ name: message.member.displayName, iconURL: message.author.displayAvatarURL() })
+                .setColor("Green")
+                .setFooter({ text: "Nothing To See Here Yet!" })
+            return message.channel.send({ embeds: [noEmbed] })
         };
 
         money.length = 10;
         var finalLb = "";
         for (var i in money) {
             if (money[i].data === null) money[i].data = 0
-            finalLb += `**${money.indexOf(money[i]) + 1}. ${bot.users.cache.get(money[i].ID.split('_')[1]) ? bot.users.cache.get(money[i].ID.split('_')[1]).tag : "Unknown User#0000"}** - ${money[i].data} :dollar:\n`;
+            finalLb += `**${money.indexOf(money[i]) + 1}. ${client.users.cache.get(money[i].ID.split('_')[1]) ? client.users.cache.get(money[i].ID.split('_')[1]).tag : "Unknown User#0000"}** - ${money[i].data} :dollar:\n`;
         };
 
         const embed = new EmbedBuilder()
             .setTitle(`Leaderboard Of ${message.guild.name}`)
-            .setColor("GREEN")
+            .setColor("Green")
             .setDescription(finalLb)
-            .setFooter(bot.user.tag, bot.user.displayAvatarURL())
+            .setFooter({ text: client.user.tag, iconURL: client.user.displayAvatarURL() })
             .setTimestamp()
-        message.channel.send(embed);
+        message.channel.send({ embeds: [embed] });
     }
 };

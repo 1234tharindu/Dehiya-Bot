@@ -1,10 +1,9 @@
-const Discord = require("discord.js");
-const backup = require('discord-backup');
+const backup = require("@outwalk/discord-backup");
 module.exports = {
     name: "backup-load",
     aliases: ["bload"],
     category: "backup",
-    usage: "qbackup-load",
+    usage: "backup-load",
     description: "load a server backup",
     run: async (client, message, args) => {
         if (!message.member.hasPermission('ADMINISTRATOR')) {
@@ -15,19 +14,19 @@ module.exports = {
 
         backup.fetch(backupID).then(() => {
 
-            let embed = new Discord.EmbedBuilder()
+            let embed = new EmbedBuilder()
                 .setTitle("Read below")
                 .setDescription(
                     ':warning: All the server channels, roles, and settings will be cleared. Do you want to continue? Send `-confirm` or `cancel`!'
                 )
                 .setThumbnail(client.user.displayAvatarURL())
                 .setTimestamp()
-                .setFooter(
-                    `${client.user.username}`,
-                    client.user.displayAvatarURL()
-                )
+                .setFooter({
+                    text: `${client.user.username}`,
+                    iconURL: client.user.displayAvatarURL()
+                })
 
-            message.channel.send(embed);
+            message.channel.send({ embeds: [embed] });
 
             const collector = message.channel.createMessageCollector((m) => m.author.id === message.author.id && ['-confirm', 'cancel'].includes(m.content), {
                 time: 60000,
@@ -40,13 +39,13 @@ module.exports = {
 
                     backup.load(backupID, message.guild).then(() => {
 
-                        const embed1 = new Discord.EmbedBuilder()
+                        const embed1 = new EmbedBuilder()
                             .setTitle("Read below")
                             .setDescription(
                                 "<a:tickYes:904236251190788116> Backup loaded successfully! "
                             )
 
-                        return message.author.send(embed1);
+                        return message.author.send({ embeds: [embed1] });
 
                     }).catch((err) => {
 

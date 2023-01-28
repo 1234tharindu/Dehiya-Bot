@@ -1,6 +1,4 @@
-const Discord = require("discord.js");
 const { EmbedBuilder } = require("discord.js");
-const Color = `RANDOM`;
 const Fetch = require("node-fetch"); //Install Node-fetch - npm i node-fetch
 
 module.exports = {
@@ -8,10 +6,7 @@ module.exports = {
     category: "fun",
     description: "Send A Meme!",
     usage: "Meme",
-    run: async (client, message, args) => {
-
-        //Start
-
+    run: async (client, message) => {
         const Reds = [
             "memes",
             "me_irl",
@@ -31,17 +26,15 @@ module.exports = {
         const data = json[0].data.children[0].data;
 
         const Embed = new EmbedBuilder()
-            .setColor(Color)
+            .setColor("Random")
             .setURL(`https://reddit.com${data.permalink}`)
-            .setTitle(data.title)
+            .setTitle(`${data.title}`)
             .setDescription(`Author : ${data.author}`)
-            .setImage(data.url)
-            .setFooter(`${data.ups || 0} 👍 | ${data.downs || 0} 👎 | ${data.num_comments || 0} 💬`)
+            .setImage(`${data.url}`)
+            .setFooter({ text: `${data.ups || 0} 👍 | ${data.downs || 0} 👎 | ${data.num_comments || 0} 💬` })
             .setTimestamp();
 
-        return message.channel.send(Embed);
-
-        //End
+        return message.channel.send({ embeds: [Embed] });
 
     }
 };

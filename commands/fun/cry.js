@@ -1,21 +1,20 @@
-const discord = require("discord.js");
-const { Random } = require("something-random-on-discord");
-const random = new Random();
+const { EmbedBuilder } = require("discord.js");
+const random = require("something-random-on-discord").Random;
 
 module.exports = {
   name: "cry",
   category: "fun",
   description: "Cry with gif",
-  run: async (client, message, args) => {
+  run: async (client, message) => {
 
     let data = await random.getAnimeImgURL("cry");
 
-    let embed = new discord.EmbedBuilder()
+    let embed = new EmbedBuilder()
       .setImage(data)
-      .setColor("RANDOM")
-      .setFooter(`Please talk with ${message.author.username} they are crying`)
+      .setColor("Random")
+      .setFooter({ text: `Please talk with ${message.author.username} they are crying` })
       .setTimestamp()
 
-    message.channel.send(embed);
+    message.channel.send({ embeds: [embed] });
   }
 };

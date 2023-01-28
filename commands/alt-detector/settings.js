@@ -1,17 +1,15 @@
-const discord = require('discord.js')
 const db = require("quick.db")
-const chalk = require('chalk')
+const { EmbedBuilder } = require("discord.js");
 
 module.exports = {
     name: "settings",
     aliases: ['setting'],
     description: "shows settings",
     category: "alt-detector",
-    run: async (client, message, member) => {
+    run: async (client, message) => {
 
         let logChannel = await db.get(`LoggingChannel_${message.guild.id}`)
         let NotifyRole = await db.get(`notifyRole_${message.guild.id}`)
-        let AltAge = await db.get(`altAge_${message.guild.id}`)
         let AltData = await db.get(`AutoKick_${message.guild.id}`)
         let AutoKickAge = await db.get(`AutokickAge_${message.guild.id}`)
         let WhiteListed = await db.get(`WhiteListed_${message.guild.id}`)
@@ -22,7 +20,6 @@ module.exports = {
 
         let channel = `<#${logChannel}>`
         let role = `<@&${NotifyRole}>`
-        let age = `${AltAge} Days`
         let WhiteListedUser = `${WhiteListed}`
         let date = `${AutoKickAge} Days`
         let modchannel = `<#${modlog}>`
@@ -52,10 +49,6 @@ module.exports = {
             role = "NO ROLE FOUND"
         }
 
-        if (AltAge === null) {
-            age = "**31 Days [BY DEFAULT]**"
-        }
-
         if (welchannel === null) {
             welchannel = "NO CHANNEL FOUND"
         }
@@ -71,7 +64,7 @@ module.exports = {
             ticketchannel = "NO CHANNEL FOUND"
         }
 
-        let embed = new discord.EmbedBuilder()
+        let embed = new EmbedBuilder()
             .setTitle(`CONFIG SETTINGS`)
             .setDescription(`
 __**ALT LOG CHANNEL**__ 
@@ -86,8 +79,6 @@ __**TICKET CHANNEL**__
 ➡ ${ticket}
 __**ALT NOTIFY ROLE**__ 
 ➡ ${role}
-__**ALT ACCOUNT AGE**__ 
-➡ ${age}
 __**AUTO KICK CMD STATUS**__ 
 ➡ ${AltData || 'DISABLED'}
 __**AUTOKICK AGE**__
@@ -98,7 +89,7 @@ __**WHITE LISTED USER**__
 
 
 
-        message.channel.send(embed)
+        message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } })
     }
 
 

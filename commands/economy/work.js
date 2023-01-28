@@ -13,7 +13,7 @@ module.exports = {
     usage: " ",
     accessableby: "everyone"
     ,
-    run: async (bot, message, args) => {
+    run: async (client, message) => {
 
         let user = message.author;
         let author = await db.fetch(`work_${user.id}`)
@@ -24,15 +24,15 @@ module.exports = {
             let time = ms(timeout - (Date.now() - author));
 
             let timeEmbed = new EmbedBuilder()
-                .setColor("GREEN")
+                .setColor("Green")
                 .setDescription(`❌ You have already worked recently\n\nTry again in ${time.minutes}m ${time.seconds}s `);
-            message.channel.send(timeEmbed)
+            message.channel.send({ embeds: [timeEmbed] })
         } else {
             let amount = Math.floor(Math.random() * 80) + 1;
             let embed1 = new EmbedBuilder()
-                .setColor("GREEN")
+                .setColor("Green")
                 .setDescription(`✅ **${JworkR} ${amount}**`)
-            message.channel.send(embed1)
+            message.channel.send({ embeds: [embed1] })
 
             db.add(`works_${user.id}`, 1)
             db.add(`money_${user.id}`, amount)

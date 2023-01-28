@@ -9,7 +9,7 @@ module.exports = {
   usage: "[username | nickname | mention | ID](optional)",
   accessableby: "everyone"
   ,
-  run: async (bot, message, args) => {
+  run: async (client, message, args) => {
     let user =
       message.mentions.members.first() ||
       message.guild.members.cache.get(args[0]) ||
@@ -32,11 +32,11 @@ module.exports = {
     let Total = bal + bank
     if (user) {
       let moneyEmbed = new EmbedBuilder()
-        .setColor("BLUE")
+        .setColor("Blue")
         .setDescription(
           `**${user.user.username}'s Balance**\n**Cash:** ${bal}$\n**Bank:** ${bank}\n**Total:** ${Total}`
         );
-      message.channel.send(moneyEmbed);
+      message.channel.send({ embeds: [moneyEmbed] });
     } else {
       return message.channel.send("**Enter A Valid User!**");
     }

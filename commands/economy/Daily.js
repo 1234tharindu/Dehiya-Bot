@@ -11,7 +11,7 @@ module.exports = {
     usage: " ",
     accessableby: "everyone"
     ,
-    run: async (bot, message, args) => {
+    run: async (message, args) => {
         let user = message.author;
 
         let timeout = 86400000;
@@ -23,14 +23,14 @@ module.exports = {
             let time = ms(timeout - (Date.now() - daily));
 
             let timeEmbed = new EmbedBuilder()
-                .setColor("GREEN")
+                .setColor("Green")
                 .setDescription(`❌ You've already collected your daily reward\n\nCollect it again in ${time.hours}h ${time.minutes}m ${time.seconds}s `);
-            message.channel.send(timeEmbed)
+            message.channel.send({ embeds: [timeEmbed] })
         } else {
             let moneyEmbed = new EmbedBuilder()
-                .setColor("GREEN")
+                .setColor("Green")
                 .setDescription(`✅ You've collected your daily reward of ${amount} coins`);
-            message.channel.send(moneyEmbed)
+            message.channel.send({ embeds: [moneyEmbed] })
             db.add(`money_${user.id}`, amount)
             db.set(`daily_${user.id}`, Date.now())
 

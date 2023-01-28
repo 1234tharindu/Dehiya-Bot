@@ -1,4 +1,4 @@
-const { EmbedBuilder } = require("discord.js");
+const { EmbedBuilder, PermissionsBitField } = require("discord.js");
 const db = require("quick.db");
 
 module.exports = {
@@ -10,8 +10,8 @@ module.exports = {
     usage: "[ mention | ID]",
     accessableby: "Administrator, Owner"
     ,
-    run: async (bot, message, args) => {
-        if (!message.member.hasPermission("ADMINISTRATOR", "MANAGE_GUILD")) return message.channel.send("❌ You do not have permissions to remove money!");
+    run: async (client, message, args) => {
+        if (!message.member.permissions.has(PermissionsBitField.Flags.Administrator)) return message.channel.send("❌ You do not have permissions to remove money!");
         if (!args[0]) return message.channel.send("**Please Enter A User!**")
 
         let user = message.mentions.members.first() || message.guild.members.cache.get(args[0]) || message.guild.members.cache.find(r => r.user.username.toLowerCase() === args[0].toLocaleLowerCase()) || message.guild.members.cache.find(r => r.displayName.toLowerCase() === args[0].toLocaleLowerCase());
@@ -26,9 +26,9 @@ module.exports = {
         let bal2 = await db.fetch(`money_${user.id}`)
 
         let moneyEmbed = new EmbedBuilder()
-            .setColor("GREEN")
+            .setColor("Green")
             .setDescription(`✅ Removed ${args[1]} coins\n\nNew Balance: ${bal2}`);
-        message.channel.send(moneyEmbed)
+        message.channel.send({ embeds: [moneyEmbed] })
 
     }
 }

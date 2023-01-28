@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-const port = 8080;
+const port = 3000;
 
 app.get("/", (req, res) => res.send("bot online yay boy!!"));
 
@@ -11,8 +11,7 @@ require("dotenv").config();
 
 ("$TOEKN");
 
-const guildDB = require("./mongo/guildDB");
-const fetch = require("node-fetch");
+
 const db = require("quick.db");
 const { emotes, emoji } = require("./config.json");
 const { EmbedBuilder } = require("discord.js");
@@ -40,23 +39,26 @@ const client = new Client({
 const colors = require("./colors.json");
 const yts = require("yt-search");
 const fs = require("node:fs");
+const { readdirSync } = require("node:fs");
 const enmap = require("enmap");
 
-const { default_prefix, guildId } = require("./config.json");
+const { guildId } = require("./config.json");
 
 client.queue = new Map();
 client.vote = new Map();
 
-require("./database.js");
-client.commands = new discord.Collection();
-client.aliases = new discord.Collection();
 
 // Command Handler
 ["command"].forEach((handler) => {
   require(`./handlers/${handler}`)(client);
 });
-client.queue = new Map();
+["slash-command"].forEach((handler) => {
+  require(`./handlers/${handler}`)(client);
+});
 
+require("./deploy-commands.js");
+
+client.queue = new Map();
 
 
 client.snipes = new Map();
@@ -75,7 +77,7 @@ client.on("messageDelete", function (message, channel) {
 // Giveaway
 const { GiveawaysManager } = require("discord-giveaways");
 const manager = new GiveawaysManager(client, {
-  storage: "./events/giveaways.json",
+  storage: "./giveaways.json",
   updateCountdownEvery: 10000,
   default: {
     botsCanWin: false,
@@ -117,11 +119,11 @@ process.on("uncaughtException", (err) => {
       `Setup Is Not Done in ${guild} aka ${guild} Guild (channel not found)`
     );
 
-  console.log("Uncaught Exception: " + err);
+  console.log(err);
 
   const exceptionembed = new EmbedBuilder()
     .setTitle("Uncaught Exception")
-    .setDescription(`${err}`)
+    .setDescription(`\`\`\`${require('util').inspect(err)}\`\`\``)
     .setColor("Red");
   client.channels.cache.get(ErrorLoggingChannel).send({ embeds: [exceptionembed] });
 });
@@ -143,7 +145,7 @@ process.on("unhandledRejection", (reason, promise) => {
   const rejectionembed = new EmbedBuilder()
     .setTitle("Unhandled Promise Rejection")
     .addFields([
-      { name: "Promise", value: `${promise}` },
+      { name: "Promise", value: `\`\`\`${require('util').inspect(promise).slice(0, 1010)}\`\`\`` },
       { name: "Reason", value: `${reason.message}` }
     ])
     .setColor("Red");
