@@ -6,81 +6,80 @@ module.exports = {
     "Get list of all command and even get to know every command detials",
   usage: "help <cmd>",
   category: "info",
-  run: async (client, message, args) => {
+  run: async (client, message) => {
 
     let helpEmbed = new EmbedBuilder()
       .setTitle(`**Here are __${client.user.username} Bot__ commands**`)
       .setDescription("**Command Parameters: <> is strict & [] is optional**")
-      .addField(
-        "• **ADMIN**",
-        "```emojiadd, add-these, announce, bug, addrole, ban, purge, hackban, kick, lock, mute, removerole, resetwarns, setnick, setmodlog, slowmode, unlock, unmute, voicekick, warn, warnings, setwelcome , nuke```"
-      )
-      .addField(
-        "• **GENERAL**",
-        "```servericon , calculator , invite , membercount ,  help , serverinfo , leaderboard``` "
-      )
-      .addField(
-        "• **GIVEAWAY**",
-        "```gstart , gend , greroll```"
-      )
-      .addField(
-        "• **SUGGESTION**",
-        "```sreply, setsuggest, suggest```"
-      )
-      .addField(
-        "• **UTILITY**",
-        "```discriminator, findemoji, haste, webhook , timedifference , send , sendembed , dm , dmembed```"
-      )
-
-      .addField(
-        "• **LEVEL**",
-        "```lb, rank```"
-      )
-      .addField(
-        "• **SEARCH**",
-        "```anime, discord, github, ig, npm, twitter```"
-      )
-      .addField(
-        "• **ECONOMY**",
-        "```balance, daily, fish, addmoney, beg, buy, deposit, leaderboard, pay, removemoney, roulette, sell, slots, shop, coins-system, withdraw, work```"
-      )
-      .addField(
-        "• **Backup**",
-        "```backup-load, info-backup, backup-create```"
-      )
-      .addField(
-        "• **INFO**",
-        "```inv, help, invite, invites, badges, botinfo, imdb, ping, pokemon, serverinfo, servericon, snipe, uptime, userinfo, dashboard, developer``` "
-      )
-      .addField(
-        "• **MUSIC**",
-        "```loop, clear, disable-loop, join, leave, nowplaying, play, playlist, pause, queue, resume, shuffle, skip, stop, volume```"
-      )
-      .addField(
-        "• **IMAGE**",
-        "```neko, slap, jail, love, triggered, achievement, avatarfusion, panda, rip, affect``` "
-      )
-      .addField(
-        "• **MODERATION**",
-        "```lockchannel , purge , slowmode , mute , unmute ,   nuke```"
-      )
-      .addField(
-        "• **OWNER**",
-        "```eval , getinvite , serverlist , stats , ticketcountreset```"
-      )
-      .addField(
-        "• **FUN**",
-        "```advice, ascii, cat, cry, dog, fact, hug, joke, kiss, kpop, math, meme, pat, punch, avatar``` "
-      )
-      .addField('Important Links ', '**[Invite Me](https://discord.com/oauth2/authorize?client_id=906899294815145995&permissions=8&scope=bot%20applications.commands)** **• [Discord](https://discord.gg/n5tpK32xdf)**')
+      .addFields([
+        {
+          name: "• **MODERATION**",
+          value: "```prefix, emojiadd, add-these, announce, bug, addrole, ban, purge, hackban, kick, lock, mute, removerole, resetwarns, setnick, setmodlog, slowmode, unlock, unmute, voicekick, warn, warnings, setwelcome , nuke```"
+        },
+        {
+          name: "• **GENERAL**",
+          value: "```servericon , calculator , invite , membercount ,  help , serverinfo , leaderboard``` "
+        },
+        {
+          name: "• **GIVEAWAY**",
+          value: "```gstart , gend , greroll```"
+        },
+        {
+          name: "• **SUGGESTION**",
+          value: "```sreply, setsuggest, suggest```"
+        },
+        {
+          name: "• **UTILITY**",
+          value: "```discriminator, findemoji, haste, webhook , timedifference , send , sendembed , dm , dmembed```"
+        },
+        {
+          name: "• **LEVEL**",
+          value: "```lb, rank```"
+        },
+        {
+          name: "• **SEARCH**",
+          value: "```anime, discord, github, ig, npm, twitter```"
+        },
+        {
+          name: "• **ECONOMY**",
+          value: "```balance, daily, fish, addmoney, beg, buy, deposit, leaderboard, pay, removemoney, roulette, sell, slots, shop, coins-system, withdraw, work```"
+        },
+        {
+          name: "• **Backup**",
+          value: "```backup-create,backup-load, backup-info, backup-remove, backups```"
+        },
+        {
+          name: "• **INFO**",
+          value: "```inv, help, invite, invites, badges, botinfo, imdb, ping, pokemon, serverinfo, servericon, snipe, uptime, userinfo, dashboard, developer``` "
+        },
+        {
+          name: "• **MUSIC**",
+          value: "```loop, clear, disable-loop, join, leave, nowplaying, play, playlist, pause, queue, resume, shuffle, skip, stop, volume```"
+        },
+        {
+          name: "• **IMAGE**",
+          value: "```neko, slap, jail, love, triggered, achievement, avatarfusion, panda, rip, affect``` "
+        },
+        {
+          name: "• **OWNER**",
+          value: "```eval , getinvite , serverlist , stats , ticketcountreset```"
+        },
+        {
+          name: "• **FUN**",
+          value: "```advice, ascii, cat, cry, dog, fact, hug, joke, kiss, math, meme, pat, punch, avatar``` "
+        },
+        {
+          name: 'Important Links ',
+          value: '**[Invite Me](https://discord.com/oauth2/authorize?client_id=906899294815145995&permissions=8&scope=bot%20applications.commands)** **• [Discord](https://discord.gg/n5tpK32xdf)**'
+        },
+      ])
       .setThumbnail(client.user.displayAvatarURL())
-      .setFooter(
-        `${client.user.username} Bot`,
-        client.user.displayAvatarURL(),
-        message.delete()
-      );
+      .setFooter({
+        text: `${client.user.username} Bot`,
+        iconURL: client.user.displayAvatarURL()
+      });
 
-    message.channel.send(helpEmbed)
+    message.channel.send({ embeds: [helpEmbed] })
 
   },
 };

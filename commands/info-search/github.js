@@ -22,7 +22,7 @@ module.exports = {
           let { login, avatar_url, name, id, html_url, public_repos, followers, following, location, created_at, bio } = body;
 
           const embed = new EmbedBuilder()
-            .setAuthor(`${login} Information!`, avatar_url)
+            .setAuthor({ name: `${login} Information!`, iconURL: avatar_url })
             .setColor(`#211F1F`)
             .setThumbnail(`${avatar_url}`)
             .addField(`Username`, `${login}`)

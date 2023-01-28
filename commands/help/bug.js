@@ -1,4 +1,6 @@
-const discord = require("discord.js");
+const { EmbedBuilder } = require("discord.js");
+const { staffChat } = require("../../config.json");
+
 module.exports = {
   name: "bug",
   category: "moderation",
@@ -38,20 +40,25 @@ module.exports = {
         reason: `Requested By : ${message.author.username}`
       })
       .then(InviteCode =>
-        client.channels.cache.get("1025828000320716912").send(
-          new discord.EmbedBuilder()
-            .setTitle("New Report Bug")
-            .addField(
-              "User Name",
-              `**${message.author.username}#${message.author.discriminator}**`
-            )
-            .addField("ID User", message.author.id)
-            .addField("Reported", args)
-            .addField("Server Name", `**${message.guild.name}**`)
-            .addField("ID Server", `**${message.guild.id}**`)
-            .addField("USER SEARCH", `**[Click Here](https://discordapp.com/users/${message.guild.id}/)**`)
-            .addField(`Link Server`, `https://discord.gg/${InviteCode.code}`)
-            .setColor("RANDOM")
+        client.channels.cache.get(`${staffChat}`).send({
+          embeds: [
+            new EmbedBuilder()
+              .setTitle("New Report Bug")
+              .addFields([
+                {
+                  name: "User Name",
+                  value: `**${message.author.username}#${message.author.discriminator}**`
+                },
+                { name: "ID User", value: message.author.id },
+                { name: "Reported", value: args },
+                { name: "Server Name", value: `**${message.guild.name}**` },
+                { name: "ID Server", value: `**${message.guild.id}**` },
+                { name: "USER SEARCH", value: `**[Click Here](https://discordapp.com/users/${message.guild.id}/)**` },
+                { name: `Link Server`, value: `https://discord.gg/${InviteCode.code}` },
+              ])
+              .setColor("Random")
+          ]
+        }
         )
       );
   }

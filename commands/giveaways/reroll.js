@@ -1,4 +1,4 @@
-const { EmbedBuilder } = require('discord.js')
+const { PermissionsBitField } = require('discord.js');
 const ms = require('ms');
 module.exports = {
     name: "greroll",
@@ -6,8 +6,8 @@ module.exports = {
         "Get list of all command and even get to know every command detials",
     usage: "help <cmd>",
     category: "giveaway",
-    run: async (bot, message, args) => {
-        if (!message.member.hasPermission('MANAGE_MESSAGES') && !message.member.roles.cache.some((r) => r.name === "Giveaways")) {
+    run: async (client, message, args) => {
+        if (!message.member.permissions.has(PermissionsBitField.Flags.ManageMessages) && !message.member.roles.cache.find((r) => r.name === "Giveaways")) {
             return message.channel.send(':x: You need to have the manage messages permissions to reroll giveaways.');
         }
 
@@ -19,9 +19,9 @@ module.exports = {
         // try to found the giveaway with prize then with ID
         let giveaway =
             // Search with giveaway prize
-            bot.giveawaysManager.giveaways.find((g) => g.prize === args.join(' ')) ||
+            client.giveawaysManager.giveaways.find((g) => g.prize === args.join(' ')) ||
             // Search with giveaway ID
-            bot.giveawaysManager.giveaways.find((g) => g.messageID === args[0]);
+            client.giveawaysManager.giveaways.find((g) => g.messageID === args[0]);
 
         // If no giveaway was found
         if (!giveaway) {
@@ -29,7 +29,7 @@ module.exports = {
         }
 
         // Reroll the giveaway
-        bot.giveawaysManager.reroll(giveaway.messageID)
+        client.giveawaysManager.reroll(giveaway.messageID)
             .then(() => {
                 // Success message
                 message.channel.send('Giveaway rerolled!');

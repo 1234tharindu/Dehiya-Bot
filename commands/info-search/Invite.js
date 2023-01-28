@@ -1,4 +1,4 @@
-const Discord = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 
 
 
@@ -27,14 +27,16 @@ module.exports = {
             let index = 0;
             memberInvites.forEach(invite => index += invite.uses);
 
-            let embed = new Discord.EmbedBuilder()
-                .setColor("GREEN")
-                .setFooter(message.guild.name, message.guild.iconURL())
-                .setAuthor(`Invite Tracker for ${message.guild.name}`)
+            let embed = new EmbedBuilder()
+                .setColor("Green")
+                .setFooter({ text: message.guild.name, iconURL: message.guild.iconURL() })
+                .setAuthor({ name: `Invite Tracker for ${message.guild.name}` })
                 .setDescription(`Information on Invites of ${member.displayName}`)
-                .addField("**No. Invited Persons**", index)
-                .addField("Invitation Codes\n\n", content);
-            message.channel.send(embed);
+                .addFields([
+                    { name: "**No. Invited Persons**", value: index },
+                    { name: "Invitation Codes\n\n", value: content },
+                ]);
+            message.channel.send({ embeds: [embed] });
         } catch (e) {
             return message.channel.send(e.message)
         }

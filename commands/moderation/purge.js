@@ -1,3 +1,4 @@
+const db = require("quick.db");
 const { default_prefix } = require("../../config.json");
 module.exports = {
   name: "purge",
@@ -6,8 +7,12 @@ module.exports = {
 
   async run(message, args) {
     // UPDATE ^ ACCORDING TO YOUR HANDLER
-    try {
+    let prefix = db.get(`prefix_${messsage.guild.id}`);
 
+    if (!prefix) {
+      prefix = default_prefix;
+    }
+    try {
       if (!message.member.hasPermission("MANAGE_MESSAGES")) return message.reply("You don't have **MANAGE_MESSAGES** premssions to use this command.");
       if (!message.guild.me.hasPermission("MANAGE_MESSAGES")) return message.reply("I don't have **MANAGE_MESSAGES** permissions to use this command.");
 
@@ -29,8 +34,8 @@ module.exports = {
         .setColor("Blue")
         .setTitle("Purge | Clear | Delete | Prune")
         .setDescription(`Delete a number of messages from a channel. (Ignores the pinned messages and limit is 100)`)
-        .addField("Usage", `\`${default_prefix}purge <amount>\` - Delete a number of messages.\n\`${default_prefix}purge <amount> --${commands.join(`\n\`${default_prefix}purge <amount> --`)}`)
-        .setFooter(`${default_prefix}purge, ${default_prefix}clear, ${default_prefix}delete, ${default_prefix}prune`)
+        .addField("Usage", `\`${prefix}purge <amount>\` - Delete a number of messages.\n\`${prefix}purge <amount> --${commands.join(`\n\`${prefix}purge <amount> --`)}`)
+        .setFooter(`${prefix}purge, ${prefix}clear, ${prefix}delete, ${prefix}prune`)
 
 
 

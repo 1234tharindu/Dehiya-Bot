@@ -1,8 +1,5 @@
-const db = require("quick.db");
-const Discord = require("discord.js")
-const { version } = require('../../package.json');
-const ms = require('pretty-ms');
-const { version: discordjsVersion } = require('discord.js');
+const { EmbedBuilder } = require("discord.js");
+
 module.exports = {
 
   name: "dashboard",
@@ -10,20 +7,25 @@ module.exports = {
   category: "info",
   aliases: ['dash', 'dashboard', 'dashboards'],
   description: 'Check\'s bot\'s dashboard',
-  run: async (client, message, args, del, member) => {
+  run: async (client, message) => {
 
-    const members = message.guild.members.cache;
+    message.channel.send({
+      embeds:
+        [
+          new EmbedBuilder()
+            .setColor('Random')
+            .setTitle(`${message.author.tag}`)
+            .setThumbnail(client.user.displayAvatarURL({ dynamic: true }))
+            .addFields([
+              { name: '**• Discord**', value: `**[Dash](https://discord.gg/n5tpK32xdf)**`, inline: true }
+            ])
 
-    message.channel.send(new Discord.EmbedBuilder()
-      .setColor('RANDOM')
-      .setTitle(`${message.author.tag}`)
-      .setThumbnail(client.user.displayAvatarURL({ dynamic: true }))
-      .addField('**• Discord**', `**[Dash](https://discord.gg/n5tpK32xdf)**`, true)
-
-      .setTimestamp()
-      .setFooter(
-        `${client.user.username} Bot`,
-        client.user.displayAvatarURL()
-      ))
+            .setTimestamp()
+            .setFooter({
+              text: `${client.user.username} Bot`,
+              iconURL: client.user.displayAvatarURL()
+            })
+        ]
+    })
   }
 };

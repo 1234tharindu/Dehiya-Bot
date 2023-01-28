@@ -1,13 +1,13 @@
-const { createCanvas, loadImage } = require('canvas');
+const { createCanvas, loadImage } = require('@napi-rs/canvas');
 const request = require('node-superfetch');
 module.exports = {
-    
-        name: "avatarfusion",
-        aliases: ["avs"],
-        category: "Image",
-        description: "",
-        usage: "[first mention | first username | first ID | first nickname] <second mention | second username | second ID | second nickname> ",
-        accessableby: "everyone"
+
+    name: "avatarfusion",
+    aliases: ["avs"],
+    category: "Image",
+    description: "",
+    usage: "[first mention | first username | first ID | first nickname] <second mention | second username | second ID | second nickname> ",
+    accessableby: "everyone"
     ,
     run: async (bot, message, args) => {
         if (!message.guild.me.hasPermission('ATTACH_FILES')) return message.channel.send("**Missing Permissions - [ATTACH_FILES]!**");

@@ -12,16 +12,16 @@ module.exports = {
     const msg = client.snipes.get(message.channel.id)
     if (!msg) return message.channel.send("There's nothing to snipe!")
     const embed = new Discord.EmbedBuilder()
-      .setAuthor(msg.author)
+      .setAuthor({ name: msg.author })
       .setDescription(msg.content)
     if (msg.image) embed
       .setImage(msg.image)
       .setColor("00FFFF")
       .setTimestamp()
-      .setFooter(
-        `${client.user.username}`,
-        client.user.displayAvatarURL()
-      )
+      .setFooter({
+        text: `${client.user.username}`,
+        iconURL: client.user.displayAvatarURL()
+      })
 
     message.channel.send(embed)
 

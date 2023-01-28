@@ -1,14 +1,12 @@
-const Discord = require("discord.js");
-
+const { EmbedBuilder } = require("discord.js");
 const malScraper = require('mal-scraper');
-
 
 module.exports = {
   name: "anime",
   category: "search",
   description: "Get info about an anime",
   usage: "[command | Anime]",
-  run: async (client, message, args) => {
+  run: async (message, args) => {
     //command
     const search = `${args}`;
     if (!search)
@@ -16,39 +14,42 @@ module.exports = {
 
     malScraper.getInfoFromName(search)
       .then((data) => {
-        const malEmbed = new Discord.EmbedBuilder()
-          .setAuthor(`My Anime List search result for ${args}`.split(',').join(' '))
+        const malEmbed = new EmbedBuilder()
+          .setAuthor({ name: `My Anime List search result for ${args}`.split(',').join(' ') })
           .setThumbnail(data.picture)
-          .setColor('RANDOM') //What ever u want color!
-          .addField('Premiered', `\`${data.premiered}\``, true)
-          .addField('Broadcast', `\`${data.broadcast}\``, true)
-          .addField('Genres', `\`${data.genres}\``, true)
-          .addField('English Title', `\`${data.englishTitle}\``, true)
-          .addField('Japanese Title', `\`${data.japaneseTitle}\``, true)
-          .addField('Type', `\`${data.type}\``, true)
-          .addField('Episodes', `\`${data.episodes}\``, true)
-          .addField('Rating', `\`${data.rating}\``, true)
-          .addField('Aired', `\`${data.aired}\``, true)
-          .addField('Score', `\`${data.score}\``, true)
-          .addField('Favorite', `\`${data.favorites}\``, true)
-          .addField('Ranked', `\`${data.ranked}\``, true)
-          .addField('Duration', `\`${data.duration}\``, true)
-          .addField('Studios', `\`${data.studios}\``, true)
-          .addField('Popularity', `\`${data.popularity}\``, true)
-          .addField('Members', `\`${data.members}\``, true)
-          .addField('Score Stats', `\`${data.scoreStats}\``, true)
-          .addField('Source', `\`${data.source}\``, true)
-          .addField('Synonyms', `\`${data.synonyms}\``, true)
-          .addField('Status', `\`${data.status}\``, true)
-          .addField('Identifier', `\`${data.id}\``, true)
-          .addField('Link', data.url, true)
+          .setColor('Random')
+          .addFields([
+            { name: 'Premiered', value: `\`${data.premiered}\``, inline: true },
+            { name: 'Broadcast', value: `\`${data.broadcast}\``, inline: true },
+            { name: 'Genres', value: `\`${data.genres}\``, inline: true },
+            { name: 'English Title', value: `\`${data.englishTitle}\``, inline: true },
+            { name: 'Japanese Title', value: `\`${data.japaneseTitle}\``, inline: true },
+            { name: 'Type', value: `\`${data.type}\``, inline: true },
+            { name: 'Episodes', value: `\`${data.episodes}\``, inline: true },
+            { name: 'Rating', value: `\`${data.rating}\``, inline: true },
+            { name: 'Aired', value: `\`${data.aired}\``, inline: true },
+            { name: 'Score', value: `\`${data.score}\``, inline: true },
+            { name: 'Favorite', value: `\`${data.favorites}\``, inline: true },
+            { name: 'Ranked', value: `\`${data.ranked}\``, inline: true },
+            { name: 'Duration', value: `\`${data.duration}\``, inline: true },
+            { name: 'Studios', value: `\`${data.studios}\``, inline: true },
+            { name: 'Popularity', value: `\`${data.popularity}\``, inline: true },
+            { name: 'Members', value: `\`${data.members}\``, inline: true },
+            { name: 'Score Stats', value: `\`${data.scoreStats}\``, inline: true },
+            { name: 'Source', value: `\`${data.source}\``, inline: true },
+            { name: 'Synonyms', value: `\`${data.synonyms}\``, inline: true },
+            { name: 'Status', value: `\`${data.status}\``, inline: true },
+            { name: 'Identifier', value: `\`${data.id}\``, inline: true },
+            { name: 'Link', value: data.url, inline: true },
+          ])
           .setTimestamp()
-          .setFooter(`Requested ${message.member.displayName}`, message.author.displayAvatarURL({ dynamic: true }))
+          .setFooter({
+            text: `Requested ${message.member.displayName}`,
+            iconURL: message.author.displayAvatarURL({ dynamic: true })
+          })
 
-        message.channel.send(malEmbed);
+        message.channel.send({ embeds: [malEmbed] });
 
       })
   }
 };
-
-//Made By Alison_

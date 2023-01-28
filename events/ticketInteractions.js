@@ -68,22 +68,19 @@ module.exports = {
             case 'closeTicket':
                 ticketLog.setDescription(`${interaction.user} has been locked the ${interaction.channel} (${interaction.channel.name})`);
 
-                interaction.channel.set(
+                interaction.channel.name.set(interaction.channel.name.replace('ticket', 'closed'));
+                interaction.channel.permissionOverwrites.set([
                     {
-                        name: interaction.channel.name.replace('ticket', 'closed'),
-                        permissionOverwrites: [
-                            {
-                                id: interaction.guild.id,
-                                allow: [],
-                                deny: [PermissionsBitField.Flags.SendMessages, PermissionsBitField.Flags.ViewChannel],
-                            },
-                            {
-                                id: interaction.guild.roles.cache.find((r) => r.name === 'Moderator'),
-                                allow: [PermissionsBitField.Flags.SendMessages, PermissionsBitField.Flags.ViewChannel],
-                                deny: [],
-                            },
-                        ]
-                    });
+                        id: interaction.guild.id,
+                        allow: [],
+                        deny: [PermissionsBitField.Flags.SendMessages, PermissionsBitField.Flags.ViewChannel],
+                    },
+                    {
+                        id: interaction.guild.roles.cache.find((r) => r.name === 'Moderator'),
+                        allow: [PermissionsBitField.Flags.SendMessages, PermissionsBitField.Flags.ViewChannel],
+                        deny: [],
+                    },
+                ]);
                 const row1 = new ActionRowBuilder()
                     .addComponents(
                         new ButtonBuilder()
@@ -105,6 +102,7 @@ module.exports = {
                     components: [row1]
                 });
                 ticketLogChannel.send({ embeds: [ticketLog] });
+                await db.set()
                 break;
 
 

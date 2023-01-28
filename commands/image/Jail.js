@@ -1,5 +1,4 @@
-const Color = "RANDOM";
-const Discord = require("discord.js");
+const { EmbedBuilder } = require("discord.js");
 
 module.exports = {
   name: "jail",
@@ -11,13 +10,13 @@ module.exports = {
 
     const Member = message.mentions.members.first() || message.guild.members.cache.get(args[0]) || message.member;
 
-    const Embed = new Discord.EmbedBuilder()
-      .setColor(Color)
+    const Embed = new EmbedBuilder()
+      .setColor("Random")
       .setTitle("Jail")
       .setImage(encodeURI
         (`https://api.devs-hub.xyz/jail?image=${Member.user.displayAvatarURL({ format: "png" })}`))
       .setTimestamp();
 
-    return message.channel.send(Embed);
+    return message.channel.send({ embeds: [Embed] });
   }
 };

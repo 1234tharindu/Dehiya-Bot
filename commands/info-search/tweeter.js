@@ -16,16 +16,16 @@ module.exports = {
       const body = await twitter.users(user)
       const tweet = new Discord.EmbedBuilder()
         .setColor("BLUE")
-        .setAuthor(`@${body.screen_name.toLowerCase()}`, body.verified ? "https://emoji.gg/assets/emoji/6817_Discord_Verified.png" : null)
+        .setAuthor({ name: `@${body.screen_name.toLowerCase()}`, iconURL: body.verified ? "https://emoji.gg/assets/emoji/6817_Discord_Verified.png" : null })
         .setDescription(stripIndents` ${body.description}
       \`•\` Followers: **${(body.followers_count).toLocaleString()}**
       \`•\` Following: **${(body.friends_count).toLocaleString()}**
       \`•\` Tweets: **${(body.statuses_count).toLocaleString()}**
       \`•\` Account Created At: ${body.created_at}`)
-        .setFooter(`Twitter ID: ${body.id}`, "https://abs.twimg.com/favicons/twitter.ico")
+        .setFooter({ text: `Twitter ID: ${body.id}`, iconURL: "https://abs.twimg.com/favicons/twitter.ico" })
         .setThumbnail(body.profile_image_url_https.replace('_normal', ''))
         .setImage(body.profile_banner_url)
-      msg.channel.send(tweet)
+      msg.channel.send({ embeds: [tweet] })
     } catch (e) {
       if (e.status === 403) return msg.channel.send("This user private mode, or deleted account")
       else if (e.status === 404) return msg.channel.send("Not Found")

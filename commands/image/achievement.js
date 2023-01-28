@@ -5,13 +5,13 @@ module.exports = {
   description: "Gives you an achievment",
   aliases: ["ach"],
   category: "Image",
-  run: async (client, message, args) => {
+  run: async (message, args) => {
     const text = args.join("+");
     const e = new EmbedBuilder()
       .setTitle("MineCraft achievement!")
       .setImage(
         `https://minecraftskinstealer.com/achievement/12/Achievement%20Get!/${text}`
       );
-    message.channel.send(e);
+    message.channel.send({ embeds: [e] });
   },
 };

@@ -1,4 +1,4 @@
-const { EmbedBuilder } = require('discord.js')
+const { PermissionsBitField } = require('discord.js');
 const ms = require('ms');
 module.exports = {
     name: "gstart",
@@ -7,8 +7,8 @@ module.exports = {
     category: "giveaway",
     aliases: ["giveaway-start"],
     usage: '<channel> <duration> <winners>, <prize>',
-    run: async (bot, message, args) => {
-        if (!message.member.hasPermission('MANAGE_MESSAGES') && !message.member.roles.cache.some((r) => r.name === "Giveaways")) {
+    run: async (client, message, args) => {
+        if (!message.member.permissions.has(PermissionsBitField.Flags.ManageMessages) && !message.member.roles.cache.find((r) => r.name === "Giveaways")) {
             return message.channel.send(':x: You need to have the manage messages permissions to start giveaways.');
         }
 
@@ -41,13 +41,13 @@ module.exports = {
         }
 
         // Start the giveaway
-        bot.giveawaysManager.start(giveawayChannel, {
+        client.giveawaysManager.start(giveawayChannel, {
             // The giveaway duration
-            time: ms(giveawayDuration),
+            duration: Math.floor(giveawayDuration),
             // The giveaway prize
             prize: giveawayPrize,
             // The giveaway winner count
-            winnerCount: giveawayNumberWinners,
+            winnerCount: Math.floor(giveawayNumberWinners),
             // Who hosts this giveaway
             hostedBy: message.author,
             // Messages
@@ -59,7 +59,7 @@ module.exports = {
                 winMessage: "Congratulations, {winners}! You won **{prize}**!",
                 embedFooter: "Giveaways",
                 noWinner: "Giveaway cancelled, no valid participations.",
-                hostedBy: "Hosted by: {user}",
+                hostedBy: `Hosted by: ${message.author}`,
                 winners: "winner(s)",
                 endedAt: "Ended at",
                 units: {

@@ -18,13 +18,13 @@ module.exports = {
       get(options).then(body => {
 
         let embed = new EmbedBuilder()
-          .setAuthor(body.name, `https://courses.cs.washington.edu/courses/cse154/webservices/pokedex/${body.images.typeIcon}`)
+          .setAuthor({ name: body.name, iconURL: `https://courses.cs.washington.edu/courses/cse154/webservices/pokedex/${body.images.typeIcon}` })
           .setDescription(`Type of this pokemon is **${body.info.type}**. ${body.info.description}`)
           .setThumbnail(`https://courses.cs.washington.edu/courses/cse154/webservices/pokedex/${body.images.photo}`)
-          .setColor("RANDOM")
-          .setFooter(`Weakness of pokemon - ${body.info.weakness}`, `https://courses.cs.washington.edu/courses/cse154/webservices/pokedex/${body.images.weaknessIcon}`)
+          .setColor("Random")
+          .setFooter({ text: `Weakness of pokemon - ${body.info.weakness}`, iconURL: `https://courses.cs.washington.edu/courses/cse154/webservices/pokedex/${body.images.weaknessIcon}` })
 
-        message.channel.send(embed)
+        message.channel.send({ embeds: [embed] })
         msg.delete()
       })
     })

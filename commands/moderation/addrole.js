@@ -28,16 +28,16 @@ module.exports = {
         if (rMember.roles.cache.has(role.id)) return message.channel.send("**User Already Has The Role!**")
         if (!rMember.roles.cache.has(role.id)) await rMember.roles.add(role.id);
         var sembed = new EmbedBuilder()
-            .setColor("GREEN")
+            .setColor("Green")
             .setAuthor(message.guild.name, message.guild.iconURL())
             .setDescription(`Role has been added to ${rMember.user.username}`)
-        message.channel.send(sembed)
+        message.channel.send({ embeds: [sembed] })
 
         let channel = db.fetch(`modlog_${message.guild.id}`)
         if (!channel) retu
 
         const embed = new EmbedBuilder()
-            .setAuthor(`${message.guild.name} Modlogs`, message.guild.iconURL())
+            .setAuthor({ name: `${message.guild.name} Modlogs`, iconURL: message.guild.iconURL() })
             .setColor("#ff0000")
             .setThumbnail(rMember.user.displayAvatarURL({ dynamic: true }))
             .setFooter(message.guild.name, message.guild.iconURL())
