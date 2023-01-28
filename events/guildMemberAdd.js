@@ -1,7 +1,7 @@
 const db = require('quick.db');
 const Canvas = require('@napi-rs/canvas');
 const moment = require("moment");
-const { AttachmentBuilder, EmbedBuilder, Events, createChannel } = require('discord.js');
+const { AttachmentBuilder, EmbedBuilder, Events } = require('discord.js');
 
 module.exports = {
     name: Events.GuildMemberAdd,
@@ -22,16 +22,20 @@ module.exports = {
             ctx.strokeStyle = '#C0C0C0';
             ctx.strokeRect(0, 0, canvas.width, canvas.height);
 
-            ctx.beginPath();
+            ctx.font = '16px monospace'
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.45)';
+            ctx.textAlign = 'center';
+            ctx.fillText(member.user.tag, canvas.width / 2, canvas.height - 15);
+
             ctx.arc(canvas.width / 2, canvas.height / 2, 75, 0, Math.PI * 2, true);
             ctx.fillStyle = "#48025c";
             ctx.fill();
 
             const avatar = await Canvas.loadImage(member.user.displayAvatarURL());
-            ctx.drawImage(avatar, canvas.width / 2 - avatar.width / 2, canvas.height / 2 - avatar.height / 2, 130, 130);
-            ctx.arc(canvas.width / 2, canvas.height / 2, 72, 0, Math.PI * 2, true);
-            ctx.closePath();
+            ctx.beginPath();
+            ctx.arc(canvas.width / 2, canvas.height / 2, 70, 0, Math.PI * 2, true);
             ctx.clip();
+            ctx.drawImage(avatar, canvas.width / 2 - 70, canvas.height / 2 - 70, 140, 140);
 
             const attachment = new AttachmentBuilder(await canvas.encode('png'), { name: 'welcome-image.png' })
 

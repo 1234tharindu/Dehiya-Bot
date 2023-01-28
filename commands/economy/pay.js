@@ -10,7 +10,7 @@ module.exports = {
   usage: "[mention | ID] <amount>",
   accessableby: "everyone"
   ,
-  run: async (bot, message, args) => {
+  run: async (client, message, args) => {
     try {
       let user2 = message.author
       if (!args[0]) return message.channel.send("**Please Enter A User!**");
@@ -28,47 +28,47 @@ module.exports = {
       let member = db.fetch(`money_${user2.id}`);
 
       let embed1 = new EmbedBuilder()
-        .setColor("GREEN")
+        .setColor("Green")
         .setDescription(`❌ Mention someone to pay`);
 
       if (!args[0]) {
-        return message.channel.send(embed1);
+        return message.channel.send({ embeds: [embed1] });
       }
       let embed2 = new EmbedBuilder()
-        .setColor("GREEN")
+        .setColor("Green")
         .setDescription(`❌ You cannot pay yourself`);
 
       if (user.user.id === message.author.id) {
-        return message.channel.send(embed2);
+        return message.channel.send({ embeds: [embed2] });
       }
 
       let embed3 = new EmbedBuilder()
-        .setColor("GREEN")
+        .setColor("Green")
         .setDescription(`❌ Specify an amount to pay`);
 
       if (!args[1]) {
-        return message.channel.send(embed3);
+        return message.channel.send({ embeds: [embed3] });
       }
       let embed4 = new EmbedBuilder()
-        .setColor("GREEN")
+        .setColor("Green")
         .setDescription(`❌ Enter A Valid Amount!`);
 
       if (isNaN(args[1])) {
-        return message.channel.send(embed4);
+        return message.channel.send({ embeds: [embed4] });
       }
       let embed5 = new EmbedBuilder()
-        .setColor("GREEN")
+        .setColor("Green")
         .setDescription(`❌ You don't have that much money`);
 
       if (member < args[1]) {
-        return message.channel.send(embed5);
+        return message.channel.send({ embeds: [embed5] });
       }
 
       let embed6 = new EmbedBuilder()
-        .setColor("GREEN")
+        .setColor("Green")
         .setDescription(`✅ You have payed ${user.displayName} ${args[1]} coins`);
 
-      message.channel.send(embed6);
+      message.channel.send({ embeds: [embed6] });
       db.add(`money_${user.id}`, args[1]);
       db.subtract(`money_${user2.id}`, args[1]);
     } catch {

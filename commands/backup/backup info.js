@@ -1,16 +1,16 @@
-const Discord = require('discord.js');
-const backup = require('discord-backup');
+const { EmbedBuilder, PermissionsBitField } = require("discord.js");
+const backup = require("@outwalk/discord-backup");
 
 
 module.exports = {
-    name: 'info-backup',
+    name: 'backup-info',
     aliases: [],
     category: 'backup',
 
 
     run: async (client, message, args) => {
         // If the member doesn't have enough permissions
-        if (!message.member.hasPermission('ADMINISTRATOR')) {
+        if (!message.member.permissions.has(PermissionsBitField.Flags.Administrator)) {
             return message.reply(':x: You need to have the administrator permissions to create a backup in this server.');
         }
 
@@ -19,20 +19,23 @@ module.exports = {
         if (!backupID)
             return message.channel.send(':x: Please specify a valid backup ID!');
 
-        backup.fetch(backupID).then((backup) => {
+        await backup.fetch(backupID).then((backup) => {
 
             const date = new Date(backup.data.createdTimestamp);
             const yyyy = date.getFullYear().toString(), mm = (date.getMonth() + 1).toString(), dd = date.getDate().toString();
             const formattedDate = `${yyyy}/${(mm[1] ? mm : "0" + mm[0])}/${(dd[1] ? dd : "0" + dd[0])}`;
 
-            const embed = new Discord.EmbedBuilder()
-                .setAuthor(':information_source: Backup', backup.data.iconURL)
-                .addField('Server name', backup.data.name)
-                .addField('Size', backup.size + ' kb')
-                .addField('Created at', formattedDate)
-                .setFooter('Backup ID: ' + backup.id);
+            const embed = new EmbedBuilder()
+                .setColor("00ffff")
+                .setAuthor({ name: 'Backup', iconURL: backup.data.iconURL })
+                .addFields([
+                    { name: 'Server name', value: backup.data.name },
+                    { name: 'Size', value: `${backup.size}kb` },
+                    { name: 'Created at', value: formattedDate },
+                ])
+                .setFooter({ text: `Backup ID: ${backup.id}` });
 
-            return message.channel.send(embed);
+            return message.channel.send({ embeds: [embed] });
 
         }).catch((err) => {
 

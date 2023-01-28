@@ -11,7 +11,7 @@ module.exports = {
     usage: " ",
     accessableby: "everyone"
     ,
-    run: async (bot, message, args) => {
+    run: async (client, message, args) => {
         let user = message.author;
 
         let timeout = 120000;
@@ -23,14 +23,14 @@ module.exports = {
             let time = ms(timeout - (Date.now() - beg));
 
             let timeEmbed = new EmbedBuilder()
-                .setColor("GREEN")
+                .setColor("Green")
                 .setDescription(`❌ You've already begged recently\n\nBeg again in ${time.minutes}m ${time.seconds}s `);
-            message.channel.send(timeEmbed)
+            message.channel.send({ embeds: [timeEmbed] })
         } else {
             let moneyEmbed = new EmbedBuilder()
-                .setColor("GREEN")
+                .setColor("Green")
                 .setDescription(`✅ You've begged and received ${amount} coins`);
-            message.channel.send(moneyEmbed)
+            message.channel.send({ embeds: [moneyEmbed] })
             db.add(`money_${user.id}`, amount)
             db.add(`begs_${user.id}`, 1)
             db.set(`beg_${user.id}`, Date.now())

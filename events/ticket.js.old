@@ -1,4 +1,4 @@
-/*const db = require("quick.db");
+const db = require("quick.db");
 const { guildId, staffChat, ticketMsgId, ticketArea } = require("../config.json")
 
 module.exports = {
@@ -157,4 +157,4 @@ module.exports = {
             }
         })
     }
-};*/
+};

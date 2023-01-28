@@ -1,4 +1,4 @@
-const Discord = require("discord.js")
+const { PermissionsBitField, EmbedBuilder, ChannelType } = require("discord.js");
 const db = require("quick.db");
 let cooldown = new Set();
 const config = require("../../config")
@@ -9,29 +9,29 @@ module.exports = {
   description: "autosetup the bot",
   category: "alt-detector",
 
-  run: async (client, message, member) => {
+  run: async (message) => {
 
 
-    if (!message.member.hasPermission("MANAGE_GUILD")) {
+    if (!message.member.permissions.has(PermissionsBitField.Flags.KickMembers)) {
       await message.delete()
       return message.channel.send(`**You Dont Have Permission To Use This Command**`)
     }
 
     if (cooldown.has(message.author.id)) {
       message = await
-        message.channel.send({ embed: { color: "#10de47", description: `**You need to wait __${config.COOLDOWN}__ minutes to use this command again!**` } });
+        message.reply({ embed: { color: "#10de47", description: `**You need to wait __${config.COOLDOWN}__ minutes to use this command again!**` } });
       setTimeout(() => {
         message.delete();
       }, 3000);
     } else {
 
-      let embed = new Discord.EmbedBuilder()
-        .setColor('RANDOM')
+      let embed = new EmbedBuilder()
+        .setColor('Random')
         .setTitle("AUTO SETUP")
         .setTimestamp()
-        .setFooter("Bot Made By ! Chirath#5959");
+        .setFooter({ text: "Bot Made By ! Chirath#5959" });
 
-      let xd = await message.channel.send(embed)
+      let xd = await message.channel.send({ embeds: [embed] })
       xd.react("✅")
       xd.react("❌")
 
@@ -48,12 +48,13 @@ module.exports = {
             if (channel) {
               channel.delete().catch(console.log)
             }
-            await message.guild.channels.create('alt-logging', {
-              type: 'text',
+            await message.guild.channels.create({
+              name: 'alt-logging',
+              type: ChannelType.GuildText,
               permissionsOverwrites: [{
                 id: message.guild.id,
-                deny: ['SEND_MESSAGES'],
-                allow: ['VIEW_CHANNEL']
+                deny: PermissionsBitField.Flags.SendMessages,
+                allow: PermissionsBitField.Flags.ViewChannel
               }]
             })
             let role = message.guild.roles.cache.find(role => role.name === "alt-notify")
@@ -63,7 +64,7 @@ module.exports = {
             await message.guild.roles.create({
               data: {
                 name: 'alt-notify',
-                color: 'RANDOM',
+                color: 'Random',
               }
             })
 
@@ -75,18 +76,18 @@ module.exports = {
             await db.delete(`notifyRole_${message.guild.id}`)
             await db.set(`notifyRole_${message.guild.id}`, notifyRole)
             message.channel.send('done')
-            let AutoSetupEmbed = new Discord.EmbedBuilder()
-              .setColor("RANDOM")
+            let AutoSetupEmbed = new EmbedBuilder()
+              .setColor("Random")
               .setDescription(`**__DOING AUTOSETUP__** \n **Please Wait For While ....**`)
-              .setFooter("Bot Made By ! Chirath#5959");
+              .setFooter({ text: "Bot Made By ! Chirath#5959" });
 
-            let AutoSetupDoneEmbed = new Discord.EmbedBuilder()
-              .setColor("RANDOM")
+            let AutoSetupDoneEmbed = new EmbedBuilder()
+              .setColor("Random")
               .setDescription(`**__AUTO SETUP DONE__** \n **Now Alt Logging Channel is ${LoggingChannel} \n And Alt Notify Role is ${notifyRole}**`)
-              .setFooter("Bot Made By ! Chirath#5959");
+              .setFooter({ text: "Bot Made By ! Chirath#5959" });
 
             message = await
-              message.channel.send(AutoSetupEmbed)
+              message.reply(AutoSetupEmbed)
             setTimeout(() => {
               message.edit(AutoSetupDoneEmbed);
             }, 1000);

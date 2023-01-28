@@ -1,23 +1,20 @@
-const Discord = require("discord.js");
-const ms = require("ms");
-const db1 = require("../../database");
-const db = require("quick.db")
+const db = require("quick.db");
+const { PermissionsBitField, EmbedBuilder } = require("discord.js");
 
 module.exports = {
   name: "config",
   aliases: ["config"],
   description: "sets config",
   category: "alt-detector",
-  run: async (client, message, member) => {
-    //args
+  run: async (client, message) => {
     const args = message.content.split(" ").slice(1);
 
-    if (!message.member.hasPermission("MANAGE_GUILD")) {
+    if (!message.member.permissions.has(PermissionsBitField.Flags.ManageGuild)) {
       await message.delete()
       return message.channel.send(`**You Dont Have Permission To Use This Command**`)
     }
 
-    const config = new Discord.EmbedBuilder()
+    const config = new EmbedBuilder()
       .setTitle(`CONFIG`)
       .setDescription(`
 ✨ \`s!config logChannel\` - ( **__Sets The logging Channel__** )
@@ -32,9 +29,6 @@ __VARIABLES__
 ✨ \`s!config notifyRole\` - ( **__Sets The Notify Role__** )
 __VARIABLES__
 \`s!config notifyrole @alt-notify\`
-✨ \`s!config altAge\`    - ( **__Sets The Alt Age__** )
-__VARIABLES__
-\`s!config altage 31\`
 ✨ \`s!config autokick\` - ( **__Sets AutoKick Configs__** )
 __VARIABLES__
 \`s!config autokick enable\` (To Enable AutoKick)
@@ -49,14 +43,13 @@ __VARIABLES__
 \`s!config remove errorlogchannel\` (Removes Error Logging Channel)
 \`s!config remove ticketchannel\` (Removes Ticket Channel)
 \`s!config remove notifyrole\` (Removes Alt Notify Role)
-\`s!config remove altage\` (Removes AltAge)
 \`s!config remove autokickage\` (Removes AutoKick Age)
 \`s!config remove whitelist\` (Removes Whitelist User)
   `)
-      .setColor(`RANDOM`)
+      .setColor(`Random`)
 
     if (args[0] === undefined) {
-      return message.channel.send(config)
+      return message.reply({ embeds: [config], allowedMentions: { repliedUser: false } })
     }
 
     if (args[0].toLowerCase() === "logchannel") {
@@ -67,19 +60,18 @@ __VARIABLES__
       if (!LoggingChannel)
         return message.channel.send(`**PLEASE MENTION A VALID CHANNEL**`);
 
-      var guildicon = message.guild.iconURL();
 
-      const succes = new Discord.EmbedBuilder()
+      const success = new EmbedBuilder()
         .setTitle(`Alt Logging Channel has been Setted!`)
         .setDescription(`New Channel is ${LoggingChannel}`)
-        .setThumbnail(guildicon)
-        .setFooter("Bot Made By ! Chirath#5959");
+        .setThumbnail(message.guild.iconURL())
+        .setFooter({ text: "Bot Made By ! Chirath#5959" });
 
       db.delete(`LoggingChannel_${message.guild.id}`);
 
       db.set(`LoggingChannel_${message.guild.id}`, LoggingChannel.id);
 
-      message.channel.send(succes);
+      message.reply({ embeds: [success], allowedMentions: { repliedUser: false } });
 
 
     } else if (args[0].toLowerCase() === "ticketchannel") {
@@ -88,21 +80,20 @@ __VARIABLES__
       let TicketChannel = message.mentions.channels.first();
 
       if (!TicketChannel)
-        return message.channel.send(`**PLEASE MENTION A VALID CHANNEL**`);
+        return message.reply({ content: `**PLEASE MENTION A VALID CHANNEL**`, allowedMentions: { repliedUser: false } });
 
-      var guildicon = message.guild.iconURL();
 
-      const succes = new Discord.EmbedBuilder()
+      const success = new EmbedBuilder()
         .setTitle(`Ticket Channel has been Setted!`)
         .setDescription(`New Channel is ${TicketChannel}`)
-        .setThumbnail(guildicon)
-        .setFooter("Bot Made By ! Chirath#5959");
+        .setThumbnail(message.guild.iconURL())
+        .setFooter({ text: "Bot Made By ! Chirath#5959" });
 
       db.delete(`TicketChannel_${message.guild.id}`);
 
       db.set(`TicketChannel_${message.guild.id}`, TicketChannel.id);
 
-      message.channel.send(succes);
+      message.reply({ embeds: [success], allowedMentions: { repliedUser: false } });
 
 
     } else if (args[0].toLowerCase() === "errorlogchannel") {
@@ -111,21 +102,20 @@ __VARIABLES__
       let ErrorLoggingChannel = message.mentions.channels.first();
 
       if (!ErrorLoggingChannel)
-        return message.channel.send(`**PLEASE MENTION A VALID CHANNEL**`);
+        return message.reply({ content: `**PLEASE MENTION A VALID CHANNEL**`, allowedMentions: { repliedUser: false } });
 
-      var guildicon = message.guild.iconURL();
 
-      const succes = new Discord.EmbedBuilder()
+      const success = new EmbedBuilder()
         .setTitle(`Error Logging Channel has been Setted!`)
         .setDescription(`New Channel is ${ErrorLoggingChannel}`)
-        .setThumbnail(guildicon)
-        .setFooter("Bot Made By ! Chirath#5959");
+        .setThumbnail(message.guild.iconURL())
+        .setFooter({ text: "Bot Made By ! Chirath#5959" });
 
       db.delete(`ErrorLoggingChannel_${message.guild.id}`);
 
       db.set(`ErrorLoggingChannel_${message.guild.id}`, ErrorLoggingChannel.id);
 
-      message.channel.send(succes);
+      message.reply({ embeds: [success], allowedMentions: { repliedUser: false } });
 
     } else if (args[0].toLowerCase() === "notifyrole") {
       args.shift();
@@ -134,46 +124,20 @@ __VARIABLES__
 
       if (!notifyRole)
         return
-      message.channel.send(`**PLEASE MENTION A VALID ROLE**`);
+      message.reply({ content: `**PLEASE MENTION A VALID ROLE**`, allowedMentions: { repliedUser: false } });
 
-      var guildicon = message.guild.iconURL();
 
-      const succes = new Discord.EmbedBuilder()
+      const success = new EmbedBuilder()
         .setTitle(`Alt Notify Role has been setted`)
         .setDescription(`New Role is ${notifyRole}`)
-        .setThumbnail(guildicon)
-        .setFooter("Bot Made By ! Chirath#5959")
+        .setThumbnail(message.guild.iconURL())
+        .setFooter({ text: "Bot Made By ! Chirath#5959" })
 
       db.delete(`notifyRole_${message.guild.id}`);
 
       db.set(`notifyRole_${message.guild.id}`, notifyRole.id);
-      message.channel.send(succes);
+      message.reply({ embeds: [success], allowedMentions: { repliedUser: false } });
 
-
-    } else if (args[0].toLowerCase() === "altage") {
-      args.shift();
-
-      let altage = Number(args[0])
-
-      if (!altage) {
-        return message.channel.send(`**Please Specify The AltAge \n__IN FORMAT__ : 30 [FOR 30 DAYS]**`)
-      }
-
-      if (altage > 120) {
-        return message.channel.send(`**Huh ! ${message.author} You Can't Set Age Above __\`120\`__ Days**`)
-      }
-      var guildicon = message.guild.iconURL();
-
-      const succes = new EmbedBuilder()
-        .setTitle(`AltAge has been Setted!`)
-        .setDescription(`New AltAge is \`${altage}\` Days`)
-        .setThumbnail(guildicon)
-        .setFooter("Bot Made By ! Chirath#5959");
-
-      message.channel.send({ embeds: [succes] });
-
-      db.delete(`altAge_${message.guild.id}`)
-      db.set(`altAge_${message.guild.id}`, altage)
 
     } else if (args[0].toLowerCase(0) === "autokick") {
       args.shift();
@@ -197,17 +161,18 @@ __VARIABLES__
         }
 
         if (autokickage > 31) {
-          return message.channel.send(`**Huh ! ${message.author} You Can't Set Age Above __\`31\`__ Days**`)
+          return message.reply({
+            content: `**Huh ! ${message.author} You Can't Set Age Above __\`31\`__ Days**`, allowedMentions: { repliedUser: false }
+          })
         }
-        var guildicon = message.guild.iconURL();
 
-        const succes = new Discord.EmbedBuilder()
+        const success = new EmbedBuilder()
           .setTitle(`AutoKick Age has been Setted!`)
           .setDescription(`New AltAge is \`${autokickage}\` Days`)
-          .setThumbnail(guildicon)
-          .setFooter("Bot Made By ! Chirath#5959");
+          .setThumbnail(message.guild.iconURL())
+          .setFooter({ text: "Bot Made By ! Chirath#5959" });
 
-        message.channel.send(succes);
+        message.reply({ embeds: [success], allowedMentions: { repliedUser: false } });
 
         db.delete(`AutokickAge_${message.guild.id}`)
         db.set(`AutokickAge_${message.guild.id}`, autokickage)
@@ -226,13 +191,13 @@ __VARIABLES__
       db.delete(`WhiteListed_${message.guild.id}`)
       db.set(`WhiteListed_${message.guild.id}`, Whitelist)
 
-      let whitelisted = new Discord.EmbedBuilder()
+      let whitelisted = new EmbedBuilder()
         .setTitle(`NEW WHITELIST USER SETTED`)
         .setDescription(`
     __Some Details About User__
 **__ID__** - ${Whitelist}
 ***__NOTE__*** - **YOU CAN ONLY SET ONE WHITELIST USER ID THE PREVIOUS ID WILL BE DELETED AUTOMATICALLY**`)
-      message.channel.send(whitelisted)
+      message.reply({ embeds: [whitelisted], allowedMentions: { repliedUser: false } })
 
     } else if (args[0].toLowerCase() === "remove") {
       args.shift()
@@ -257,11 +222,6 @@ __VARIABLES__
         message.channel.send(`**NotifyRole Has Been Removed**`)
       }
 
-      if (args[0].toLowerCase() === "altage") {
-        db.delete(`altAge_${message.guild.id}`)
-        message.channel.send(`**AltAge Has Been Removed** \n**But Its \`31\` By Default**`)
-      }
-
       if (args[0].toLowerCase() === "autokickage") {
         db.delete(`AutoKickAge_${message.guild.id}`)
         message.channel.send(`**AutoKick Age Has Been Removed**  \n**But Its \`8\` By Default**`)
@@ -272,7 +232,7 @@ __VARIABLES__
         message.channel.send(`**WhiteList User Has Been Removed**`)
       }
 
-    } else message.channel.send("Unknown config variable...")
+    } else message.reply({ conten: "Unknown config variable...", allowedMentions: { repliedUser: false } })
 
   }
 

@@ -11,7 +11,7 @@ module.exports = {
     usage: "<amount>",
     accessableby: ""
     ,
-    run: async (bot, message, args) => {
+    run: async (client, message, args) => {
 
         let user = message.author;
         let moneydb = await db.fetch(`money_${user.id}`)
@@ -19,15 +19,15 @@ module.exports = {
         let win = false;
 
         let moneymore = new EmbedBuilder()
-            .setColor("GREEN")
+            .setColor("Green")
             .setDescription(`❌ You are betting more than you have`);
 
         let moneyhelp = new EmbedBuilder()
-            .setColor("GREEN")
+            .setColor("Green")
             .setDescription(`❌ Specify an amount`);
 
-        if (!money) return message.channel.send(moneyhelp);
-        if (money > moneydb) return message.channel.send(moneymore);
+        if (!money) return message.channel.send({ embeds: [moneyhelp] });
+        if (money > moneydb) return message.channel.send({ embeds: [moneymore] });
 
         let number = []
         for (let i = 0; i < 3; i++) { number[i] = Math.floor(Math.random() * slotItems.length); }
@@ -42,14 +42,14 @@ module.exports = {
         if (win) {
             let slotsEmbed1 = new EmbedBuilder()
                 .setDescription(`${slotItems[number[0]]} | ${slotItems[number[1]]} | ${slotItems[number[2]]}\n\nYou won ${money} coins`)
-                .setColor("GREEN")
-            message.channel.send(slotsEmbed1)
+                .setColor("Green")
+            message.channel.send({ embeds: [slotsEmbed1] })
             db.add(`money_${user.id}`, money)
         } else {
             let slotsEmbed = new EmbedBuilder()
                 .setDescription(`${slotItems[number[0]]} | ${slotItems[number[1]]} | ${slotItems[number[2]]}\n\nYou lost ${money} coins`)
-                .setColor("GREEN")
-            message.channel.send(slotsEmbed)
+                .setColor("Green")
+            message.channel.send({ embeds: [slotsEmbed] })
             db.subtract(`money_${user.id}`, money)
         }
 

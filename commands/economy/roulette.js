@@ -1,6 +1,6 @@
 const { EmbedBuilder } = require("discord.js");
 const db = require("quick.db");
-const { default_prefix } = require('../../config');
+const { default_prefix } = require("../../config.json");
 
 module.exports = {
 
@@ -11,17 +11,11 @@ module.exports = {
     usage: "[colour]<amount>",
     accessableby: "everyone"
     ,
-    run: async (bot, message, args) => {
-        let prefix = "q"
-        let fetched = await db.fetch(`prefix_${message.guild.id}`);
-
-        if (fetched === null) {
-            fetched = prefix
-        } else {
-            prefix = fetched
+    run: async (client, message, args) => {
+        let prefix = db.get(`prefix_${message.guild.id}`);
+        if (!prefix) {
+            prefix = default_prefix;
         }
-
-        let user = message.author;
 
         function isOdd(num) {
             if ((num % 2) == 0) return false;
@@ -35,15 +29,15 @@ module.exports = {
         let random = Math.floor((Math.random() * 10));
 
         let moneyhelp = new EmbedBuilder()
-            .setColor("GREEN")
+            .setColor("Green")
             .setDescription(`❌ Specify an amount to gamble | ${prefix}roulette <color> <amount>`);
 
         let moneymore = new EmbedBuilder()
-            .setColor("GREEN")
+            .setColor("Green")
             .setDescription(`❌ You are betting more than you have`);
 
         let colorbad = new EmbedBuilder()
-            .setColor("GREEN")
+            .setColor("Green")
             .setDescription(`❌ Specify a color | Red [1.5x] (normal) Black [2x] (hard) Green [15x](rare)`);
 
         if (!colour) return message.channel.send(colorbad);
@@ -60,29 +54,29 @@ module.exports = {
             money *= 15
             db.add(`money_${user.id}`, money)
             let moneyEmbed1 = new EmbedBuilder()
-                .setColor("GREEN")
+                .setColor("Green")
                 .setDescription(`✅ You won ${money} coins\n\nMultiplier: 15x`);
-            message.channel.send(moneyEmbed1)
+            message.channel.send({ embeds: [moneyEmbed1] })
         } else if (isOdd(random) && colour == 1) { // Red
             money = parseInt(money * 1.5)
             db.add(`money_${user.id}`, money)
             let moneyEmbed2 = new EmbedBuilder()
-                .setColor("GREEN")
+                .setColor("Green")
                 .setDescription(`🔴 You won ${money} coins\n\nMultiplier: 1.5x`);
-            message.channel.send(moneyEmbed2)
+            message.channel.send({ embeds: [moneyEmbed2] })
         } else if (!isOdd(random) && colour == 0) { // Black
             money = parseInt(money * 2)
             db.add(`money_${user.id}`, money)
             let moneyEmbed3 = new EmbedBuilder()
-                .setColor("GREEN")
+                .setColor("Green")
                 .setDescription(`⬛ You won ${money} coins\n\nMultiplier: 2x`);
-            message.channel.send(moneyEmbed3)
+            message.channel.send({ embeds: [moneyEmbed3] })
         } else { // Wrong
             db.subtract(`money_${user.id}`, money)
             let moneyEmbed4 = new EmbedBuilder()
-                .setColor("GREEN")
+                .setColor("Green")
                 .setDescription(`❌ You lost ${money} coins\n\nMultiplier: 0x`);
-            message.channel.send(moneyEmbed4)
+            message.channel.send({ embeds: [moneyEmbed4] })
         }
         db.add(`games_${user.id}`, 1)
     }

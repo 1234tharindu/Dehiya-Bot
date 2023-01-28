@@ -1,6 +1,5 @@
 
-const Color = "RANDOM";
-const Discord = require("discord.js");
+const { EmbedBuilder } = require("discord.js");
 
 module.exports = {
   name: "slap",
@@ -16,11 +15,11 @@ module.exports = {
     const Other = args.slice(1).join(" ") || "Don't Be Gay";
     if (Other.length > 50) return message.channel.send("Characters Limit Reached - 50!");
 
-    const Embed = new Discord.EmbedBuilder()
-      .setColor(Color)
+    const Embed = new EmbedBuilder()
+      .setColor("Random")
       .setImage(encodeURI(`https://vacefron.nl/api/batmanslap?text1=bruh&text2=${Other}&batman=${message.author.avatarURL({ format: "png" })}&robin=${Member.user.displayAvatarURL({ format: "png" })}`))
       .setTimestamp();
 
-    return message.channel.send(Embed);
+    return message.channel.send({ embeds: [Embed] });
   }
 };

@@ -13,7 +13,7 @@ module.exports = {
     usage: '[list | rewards] (optional)',
     acessableby: 'everyone'
     ,
-    run: async (bot, message, args) => {
+    run: async (client, message, args) => {
 
         let user = message.author;
 
@@ -42,15 +42,15 @@ module.exports = {
                 let time = ms(timeout - (Date.now() - fishtime));
 
                 let timeEmbed = new EmbedBuilder()
-                    .setColor("GREEN")
+                    .setColor("Green")
                     .setDescription(`❌ You've Recently Casted A Line\n\nFish Again in ${time.minutes}m ${time.seconds}s `);
-                return message.channel.send(timeEmbed)
+                return message.channel.send({ embeds: [timeEmbed] })
             }
 
             let embed = new EmbedBuilder()
-                .setColor('GREEN')
+                .setColor('Green')
                 .setDescription(`**🎣 You Cast Out Your Line And Caught A ${fishh.symbol}, I Bet It'd Sell For Around ${worth}**!`)
-            message.channel.send(embed);
+            message.channel.send({ embeds: [embed] });
 
             db.add(`money_${user.id}`, worth);
             db.add(`fish_${user.id}`, 1);
@@ -59,7 +59,7 @@ module.exports = {
         if (args[0] === 'list' || args[0] === 'rewards') {
 
             let lEmbed = new EmbedBuilder()
-                .setColor('GREEN')
+                .setColor('Green')
                 .setTitle(`List Of Fish Names And Rewards You Can Get`)
                 .setDescription(`
 \`\`\`🔧Junk      :: Max Reward: 5, Min Reward: 1
@@ -70,8 +70,11 @@ module.exports = {
 **All reward are random from max/min**
 ​
 `)
-                .setFooter(message.guild.name, message.guild.iconURL())
-            return message.channel.send(lEmbed);
+                .setFooter({
+                    text: message.guild.name,
+                    iconURL: message.guild.iconURL()
+                })
+            return message.channel.send({ embeds: [lEmbed] });
         }
     }
 }
