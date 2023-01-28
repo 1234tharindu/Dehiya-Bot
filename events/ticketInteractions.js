@@ -68,18 +68,22 @@ module.exports = {
             case 'closeTicket':
                 ticketLog.setDescription(`${interaction.user} has been locked the ${interaction.channel} (${interaction.channel.name})`);
 
-                interaction.channel.permissionOverwrites.set([
+                interaction.channel.set(
                     {
-                        id: interaction.guild.id,
-                        allow: [],
-                        deny: [PermissionsBitField.Flags.SendMessages, PermissionsBitField.Flags.ViewChannel],
-                    },
-                    {
-                        id: interaction.guild.roles.cache.find((r) => r.name === 'Moderator'),
-                        allow: [PermissionsBitField.Flags.SendMessages, PermissionsBitField.Flags.ViewChannel],
-                        deny: [],
-                    },
-                ]);
+                        name: interaction.channel.name.replace('ticket', 'closed'),
+                        permissionOverwrites: [
+                            {
+                                id: interaction.guild.id,
+                                allow: [],
+                                deny: [PermissionsBitField.Flags.SendMessages, PermissionsBitField.Flags.ViewChannel],
+                            },
+                            {
+                                id: interaction.guild.roles.cache.find((r) => r.name === 'Moderator'),
+                                allow: [PermissionsBitField.Flags.SendMessages, PermissionsBitField.Flags.ViewChannel],
+                                deny: [],
+                            },
+                        ]
+                    });
                 const row1 = new ActionRowBuilder()
                     .addComponents(
                         new ButtonBuilder()
@@ -94,9 +98,10 @@ module.exports = {
                             .setStyle(ButtonStyle.Secondary),
                     )
                 interaction.channel.send({
-                    content: '```Support team ticket controls```',
                     embeds: [new EmbedBuilder()
+                        .setColor('Yellow')
                         .setDescription(`Ticket closed by ${interaction.user}`)],
+                    content: '```Support team ticket controls```',
                     components: [row1]
                 });
                 ticketLogChannel.send({ embeds: [ticketLog] });
