@@ -1,5 +1,5 @@
 const Discord = require("discord.js");
-const { EmbedBuilder, SlashCommandBuilder } = require("discord.js");
+const { EmbedBuilder, SlashCommandBuilder, PermissionsBitField } = require("discord.js");
 const db = require("quick.db");
 
 module.exports = {
