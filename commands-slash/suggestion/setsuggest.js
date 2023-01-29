@@ -1,4 +1,3 @@
-const Discord = require("discord.js");
 const { EmbedBuilder, SlashCommandBuilder, PermissionsBitField } = require("discord.js");
 const db = require("quick.db");
 
@@ -6,11 +5,8 @@ module.exports = {
     data: new SlashCommandBuilder()
         .setName('set-suggest')
         .setDescription('set suggest')
-        .setDefaultMemberPermissions(PermissionsBitField.Flags.Administrator),
+        .setDefaultMemberPermissions(PermissionsBitField.Flags.ManageGuild),
     run: async (client, message, args) => {
-        if (!message.member.hasPermission("MANAGE_GUILD")) {
-            return message.channel.send(`You Don't Have Permission To Use This Command! Manage server`)
-        }
         let Channel = message.mentions.channels.first() || message.guild.channels.cache.get(args[0]);
 
         if (!Channel) return message.channel.send(`Please Mention A Channel!`);

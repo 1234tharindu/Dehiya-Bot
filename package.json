@@ -93,16 +93,10 @@
     "ytsr": "^3.2.2"
   },
   "engines": {
-    "node": "12.x"
+    "node": "16.x"
   },
-  "repository": {
-    "url": "https://glitch.com/edit/#!/hello-express"
-  },
-  "license": "MIT",
   "keywords": [
-    "node",
-    "glitch",
-    "express"
+    "node"
   ],
   "devDependencies": {
     "node": "^16.13.0"

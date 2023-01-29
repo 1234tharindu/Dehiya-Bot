@@ -1,17 +1,15 @@
-const Discord = require("discord.js");
-const { EmbedBuilder, SlashCommandBuilder } = require("discord.js");
+const { EmbedBuilder, SlashCommandBuilder, PermissionsBitField } = require("discord.js");
 const db = require("quick.db");
 
 module.exports = {
   data: new SlashCommandBuilder()
     .setName('sreply')
-    .setDescription('reply to suggestion'),
+    .setDescription('reply to suggestion')
+    .setDefaultMemberPermissions(PermissionsBitField.Flags.ManageGuild),
   run: async (client, message, args) => {
 
     let channel = await db.fetch(`suggestion_${message.guild.id}`);
     if (channel === null) return;
-
-    if (!message.member.hasPermission('MANAGE_GUILD')) return;
 
     const rgx = /^(?:<@!?)?(\d+)>?$/;
 
