@@ -78,8 +78,9 @@ module.exports = {
 
                 ticketLog.setDescription(`${interaction.user} has been locked the ${interaction.channel} (${interaction.channel.name})`);
 
-                interaction.channel.setName(interaction.channel.name.replace('ticket', 'closed'));
-                interaction.channel.permissionOverwrites.set([
+                await interaction.channel.setName('closed');
+                console.log(interaction.channel.name);
+                await interaction.channel.permissionOverwrites.set([
                     {
                         id: interaction.guild.id,
                         allow: [],
