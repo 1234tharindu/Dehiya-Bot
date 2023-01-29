@@ -1,5 +1,7 @@
 const { PermissionFlagsBits, Events, ChannelType, PermissionsBitField, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const db = require('quick.db');
+const wait = require('node:timers/promises').setTimeout;
+
 module.exports = {
     name: Events.InteractionCreate,
     once: false,
@@ -15,9 +17,9 @@ module.exports = {
         switch (interaction.customId) {
             case 'primary':
 
-                await i.deferUpdate();
+                await interaction.deferUpdate();
                 await wait(4000);
-                await i.editReply({ content: 'A button was clicked!', components: [] });
+                await interaction.editReply({ content: 'A button was clicked!', components: [] });
                 break;
 
             case 'createTicket':
@@ -73,6 +75,8 @@ module.exports = {
 
 
             case 'closeTicket':
+                await interaction.deferUpdate();
+
                 ticketLog.setDescription(`${interaction.user} has been locked the ${interaction.channel} (${interaction.channel.name})`);
 
                 interaction.channel.name.edit(interaction.channel.name.replace('ticket', 'closed'));

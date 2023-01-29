@@ -1,4 +1,4 @@
-const Discord = require("discord.js")
+const { SlashCommandBuilder, PermissionsBitField } = require("discord.js");
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('dm-embed')
