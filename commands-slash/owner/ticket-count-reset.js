@@ -8,7 +8,7 @@ module.exports = {
         .setDefaultMemberPermissions(PermissionsBitField.Flags.Administrator),
     execute: async (interaction) => {
 
-        await db.set(`TicketNumber_${interaction.guild.id}`, 0);
+        await db.set(`TicketNumber_${interaction.guild.id}`, 1);
         interaction.reply(`Successfully Reset the Ticket Count`)
     }
 }
