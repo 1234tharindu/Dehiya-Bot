@@ -17,6 +17,8 @@ module.exports = {
         switch (interaction.customId) {
 
             case 'createTicket':
+                db.delete(`TicketNumber_${interaction.guild.id}`);
+                db.delete(`TicketNumber_${interaction.guild.id}`);
                 let ticketId = await db.get(`TicketNumber_${interaction.guild.id}`);
                 let ticket_num = ("000" + ticketId).slice(-4);
                 await db.set(`TicketNumber_${interaction.guild.id}`, ++ticketId);
