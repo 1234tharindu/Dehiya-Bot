@@ -1,12 +1,12 @@
-const { PermissionFlagsBits, Events, ChannelType, PermissionsBitField, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
-const db = require('quick.db');
-const wait = require('node:timers/promises').setTimeout;
+const { Events, ChannelType, PermissionsBitField, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
+
 
 module.exports = {
     name: Events.InteractionCreate,
     once: false,
     async execute(interaction, client) {
         if (!interaction.isButton()) return;
+        const db = require('quick.db');
         const ticketLogChannel = interaction.guild.channels.cache.get(await db.get(`TicketLogsChannel_${interaction.guild.id}`));
         const ticketLog = new EmbedBuilder()
             .setTitle('Ticket Logs')
@@ -15,18 +15,11 @@ module.exports = {
             .setFooter({ text: `${client.user.username}`, iconURL: client.user.displayAvatarURL() });
 
         switch (interaction.customId) {
-            case 'primary':
-
-                await interaction.deferUpdate();
-                await wait(4000);
-                await interaction.editReply({ content: 'A button was clicked!', components: [] });
-                break;
 
             case 'createTicket':
                 let ticketId = await db.get(`TicketNumber_${interaction.guild.id}`);
-                ticketId++;
                 let ticket_num = ("000" + ticketId).slice(-4);
-                await db.set(`TicketNumber_${interaction.guild.id}`, ticketId);
+                await db.set(`TicketNumber_${interaction.guild.id}`, ++ticketId);
 
                 const tChannel = await interaction.guild.channels.create(
                     {
