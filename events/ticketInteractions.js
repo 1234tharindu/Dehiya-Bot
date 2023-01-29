@@ -52,7 +52,7 @@ module.exports = {
                         ],
                     }
                 );
-                await interaction.defferReply();
+
                 ticketLog.setDescription(`${interaction.user} has created a new ticket ${tChannel}`);
                 ticketLogChannel.send({ content: `__Notification:__ @here`, embeds: [ticketLog] })
 
