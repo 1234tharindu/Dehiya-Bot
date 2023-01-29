@@ -13,6 +13,13 @@ module.exports = {
             .setFooter({ text: `${client.user.username}`, iconURL: client.user.displayAvatarURL() });
 
         switch (interaction.customId) {
+            case 'primary':
+
+                await i.deferUpdate();
+                await wait(4000);
+                await i.editReply({ content: 'A button was clicked!', components: [] });
+                break;
+
             case 'createTicket':
                 let ticketId = await db.get(`TicketNumber_${interaction.guild.id}`);
                 ticketId++;
