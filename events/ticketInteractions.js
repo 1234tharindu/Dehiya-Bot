@@ -23,7 +23,6 @@ module.exports = {
                 break;
 
             case 'createTicket':
-                await interaction.deferUpdate();
                 let ticketId = await db.get(`TicketNumber_${interaction.guild.id}`);
                 ticketId++;
                 let ticket_num = ("000" + ticketId).slice(-4);
@@ -72,11 +71,11 @@ module.exports = {
                             .setStyle(ButtonStyle.Secondary),
                     )
                 tChannel.send({ content: `${interaction.user} Welcome`, embeds: [created], components: [row] });
+                await interaction.deferUpdate();
                 break;
 
 
             case 'closeTicket':
-                await interaction.deferUpdate();
                 ticketLog.setDescription(`${interaction.user} has been locked the ${interaction.channel} (${interaction.channel.name})`);
 
                 await interaction.channel.setName(interaction.channel.name.replace('ticket', 'closed'));
@@ -113,6 +112,7 @@ module.exports = {
                     components: [row1]
                 });
                 ticketLogChannel.send({ embeds: [ticketLog] });
+                await interaction.deferUpdate();
                 break;
 
 
