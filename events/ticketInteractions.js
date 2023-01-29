@@ -75,7 +75,6 @@ module.exports = {
 
 
             case 'closeTicket':
-                await interaction.deferUpdate();
 
                 ticketLog.setDescription(`${interaction.user} has been locked the ${interaction.channel} (${interaction.channel.name})`);
 
@@ -113,7 +112,7 @@ module.exports = {
                     components: [row1]
                 });
                 ticketLogChannel.send({ embeds: [ticketLog] });
-                await db.set()
+                await interaction.deferUpdate();
                 break;
 
 
