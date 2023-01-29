@@ -136,7 +136,7 @@ module.exports = {
 }
 
 
-
+/*
 async function createTicket(ticketType, reason) {
     const ticketName = client.config.ticketNameOption
         .replace('USERNAME', interaction.user.username)
@@ -395,3 +395,4 @@ if (interaction.isModalSubmit()) {
         close(interaction, client, interaction.fields.fields.first().value);
     }
 };
+*/
