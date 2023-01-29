@@ -1,133 +1,124 @@
-const { SlashCommandBuilder, PermissionsBitField } = require("discord.js");
-const Discord = require("discord.js")
+const { SlashCommandBuilder, PermissionsBitField, EmbedBuilder } = require("discord.js")
+
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('send-embed')
         .setDescription('send embed to a specific channel')
         .setDefaultMemberPermissions(PermissionsBitField.Flags.ManageMessages)
         .addChannelOption(option =>
-            option.setName('Channel')
+            option.setName('channel')
                 .setDescription('The channel which wants to send the embed')
                 .setRequired(true))
         .addStringOption(option =>
-            option.setName('Title')
+            option.setName('title')
                 .setDescription('Title of the embed')
                 .setRequired(true))
         .addStringOption(option =>
-            option.setName('Description')
+            option.setName('description')
                 .setDescription('Description of the embed')
                 .setRequired(true))
         .addStringOption(option =>
-            option.setName('Footer')
+            option.setName('footer')
                 .setDescription('Footer of the embed')
                 .setRequired(true))
         .addStringOption(option =>
-            option.setName('Color')
+            option.setName('color')
                 .setDescription('Color of the embed')
                 .setRequired(true))
         .addStringOption(option =>
-            option.setName('Author')
+            option.setName('author')
                 .setDescription('Author of the embed')
                 .setRequired(true))
         .addStringOption(option =>
-            option.setName('Image')
+            option.setName('image')
                 .setDescription('Image of the embed')
                 .setRequired(true))
         .addStringOption(option =>
-            option.setName('Thumbnail')
+            option.setName('thumbnail')
                 .setDescription('Thumbnail of the embed')
                 .setRequired(true))
         .addStringOption(option =>
-            option.setName('TimeStamp')
+            option.setName('timestamp')
                 .setDescription('TimeStamp of the embed')
+                .setAutocomplete(true)
                 .setRequired(true))
         .addStringOption(option =>
-            option.setName('Field1')
+            option.setName('field1')
                 .setDescription('1st Field of the embed'))
         .addStringOption(option =>
-            option.setName('Field2')
+            option.setName('field2')
                 .setDescription('2nd Field of the embed'))
         .addStringOption(option =>
-            option.setName('Field3')
+            option.setName('field3')
                 .setDescription('3rd Field of the embed'))
         .addStringOption(option =>
-            option.setName('Field4')
+            option.setName('field4')
                 .setDescription('4th Field of the embed')),
+
+    async autocomplete(interaction) {
+        const focusedOption = interaction.options.getFocused(true);
+        let choices;
+
+        if (focusedOption.name === 'timestamp') {
+            choices = ['yes', 'no'];
+        }
+
+        const filtered = choices.filter(choice => choice.startsWith(focusedOption.value));
+        await interaction.respond(
+            filtered.map(choice => ({ name: choice, value: choice })),
+        );
+    },
 
     async execute(interaction) {
 
-        const channel = interaction.options.getChannel('Channel');
+        const channel = interaction.options.getChannel('channel');
+        const title = interaction.options.getString('title');
+        const description = interaction.options.getString('description');
+        const footer = interaction.options.getString('footer');
+        const thumbnail = interaction.options.getString('thumbnail');
+        const timestamp = interaction.options.getString('timestamp');
+        const field_name_1 = interaction.options.getString('field_name_1');
+        const field_value_1 = interaction.options.getString('field_value_1');
+        const field_name_2 = interaction.options.getString('field_name_2');
+        const field_value_2 = interaction.options.getString('field_value_2');
+        const field_name_3 = interaction.options.getString('field_name_3');
+        const field_value_3 = interaction.options.getString('field_value_3');
+        const field_name_4 = interaction.options.getString('field_name_4');
+        const field_value_4 = interaction.options.getString('field_value_4');
+        let field;
 
-        const filter = msg => msg.author.id == message.author.id;
-        const options = {
-            max: 1
-        };
-        //===============================================================================================
-        // Getting Started
-        const embed = new Discord.EmbedBuilder();
-        message.channel.send("Reply `skip` or `no` for next question, Reply `cancel` to stop the command.");
+        const embed = new EmbedBuilder();
 
-
-        //===============================================================================================
-        // Getting Title
-        message.channel.send("So, Do you want your embed to have any title?");
-        let title = await message.channel.awaitMessages(filter, options);
-        if (title.first().content == 'cancel') return message.channel.send('Embed Generator Cancelled.')
-        if (title.first().content !== 'skip' && title.first().content !== 'cancel') embed.setTitle(title.first().content);
-
-        //===============================================================================================
-        // Getting Description
-        message.channel.send("great, now o you want your embed to have any Description?");
-        let Description = await message.channel.awaitMessages(filter, options);
-        if (Description.first().content == 'cancel') return message.channel.send('Embed Generator Cancelled.')
-        if (Description.first().content !== 'skip' && Description.first().content !== 'cancel') embed.setDescription(Description.first().content);
-
-        //===============================================================================================
-        // Getting Footer
-        message.channel.send("So, Do you want your embed to have any Footer? or default or cancel");
-        let Footer = await message.channel.awaitMessages(filter, options);
-        if (Footer.first().content == 'cancel') return message.channel.send('Embed Generator Cancelled. ')
-        if (Footer.first().content == 'default') embed.setFooter(`${client.user.username}`, client.user.displayAvatarURL());
-        if (Footer.first().content !== 'skip' && Footer.first().content !== 'cancel' && Footer.first().content !== 'default') embed.setFooter(Footer.first().content);
-
-        //===============================================================================================
-        // Getting URL
-
-
-        //===============================================================================================
-        // Getting Color
-        message.channel.send("So, Do you want your embed to have any specifci color? Default is Black");
-        let Color = await message.channel.awaitMessages(filter, options);
-        if (Color.first().content == 'cancel') return message.channel.send('Embed Generator Cancelled.')
-        if (Color.first().content !== 'skip' && Color.first().content !== 'cancel') embed.setColor(Color.first().content.toUpperCase() || "2f3136")
-
-        //===============================================================================================
-        // Getting Author Field
-        message.channel.send("So, Do you want your embed to have any Author Field?");
-        let Author = await message.channel.awaitMessages(filter, options);
-        if (Author.first().content == 'cancel') return message.channel.send('Embed Generator Cancelled.')
-        if (Author.first().content !== 'skip' && Author.first().content !== 'cancel') embed.setAuthor(Author.first().content);
-
-        //===============================================================================================
-        // Getting Image
-        message.channel.send("So, Do you want your embed to have any Image?");
-        let Image = await message.channel.awaitMessages(filter, options);
-        if (Image.first().content == 'cancel') return message.channel.send('Embed Generator Cancelled.')
-        if (Image.first().content !== 'skip' && Image.first().content !== 'cancel') embed.setImage(Image.first().content);
-
-        //===============================================================================================
-        // Getting Thumbnail
-        message.channel.send("So, Do you want your embed to have any Thumbnail?");
-        let Thumbnail = await message.channel.awaitMessages(filter, options);
-        if (Thumbnail.first().content == 'cancel') return message.channel.send('Embed Generator Cancelled.')
-        if (Thumbnail.first().content !== 'skip' && Thumbnail.first().content !== 'cancel') embed.setThumbnail(Thumbnail.first().content);
-
-        //===============================================================================================
-        // Getting TimeStamp
-        message.channel.send("So, Do you want your embed to have any TimeStamp? Reply `yes` or `no`");
-        let TimeStamp = await message.channel.awaitMessages(filter, options);
-        if (TimeStamp.first().content == 'cancel') return message.channel.send('Embed Generator Cancelled.')
-        if (TimeStamp.first().content == 'yes') embed.setTimestamp();
+        if (title) {
+            embed.setTitle(title);
+        }
+        if (description) {
+            embed.setDescription(description);
+        }
+        if (footer) {
+            embed.setFooter({ text: footer, iconURL: client.user.displayAvatarURL() });
+        }
+        if (thumbnail) {
+            embed.setThumbnail(thumbnail);
+        }
+        if (timestamp == 'yes') {
+            embed.setTimestamp();
+        }
+        if (field_name_1 && field_value_1) {
+            field.push({ name: field_name_1, value: field_value_1 });
+        }
+        if (field_name_2 && field_value_2) {
+            field.push({ name: field_name_2, value: field_value_2 });
+        }
+        if (field_name_3 && field_value_3) {
+            field.push({ name: field_name_3, value: field_value_3 });
+        }
+        if (field_name_4 && field_value_4) {
+            field.push({ name: field_name_4, value: field_value_4 });
+        }
+        if (field.length > 0) {
+            embed.addFields(field);
+        }
 
         channel.send({ embeds: [embed] })
     }
