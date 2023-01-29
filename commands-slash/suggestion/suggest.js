@@ -3,11 +3,9 @@ const { EmbedBuilder, SlashCommandBuilder, PermissionsBitField } = require("disc
 const db = require("quick.db");
 
 module.exports = {
-  name: "suggest",
-  category: "suggestion",
   data: new SlashCommandBuilder()
-    .setName('dm')
-    .setDescription('Send a dm to a guild user')
+    .setName('suggest')
+    .setDescription('suggestion')
     .setDefaultMemberPermissions(PermissionsBitField.Flags.Administrator),
 
   run: async (client, message, args) => {

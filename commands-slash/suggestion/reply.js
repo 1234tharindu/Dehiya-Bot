@@ -5,7 +5,7 @@ const db = require("quick.db");
 module.exports = {
   data: new SlashCommandBuilder()
     .setName('sreply')
-    .setDescription('suggestion'),
+    .setDescription('reply to suggestion'),
   run: async (client, message, args) => {
 
     let channel = await db.fetch(`suggestion_${message.guild.id}`);
