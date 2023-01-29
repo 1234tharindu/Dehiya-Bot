@@ -52,7 +52,7 @@ module.exports = {
                         ],
                     }
                 );
-                interaction.reply({ content: `Your ticket has been created in ${tChannel}`, ephemeral: true })
+                await interaction.defferReply();
                 ticketLog.setDescription(`${interaction.user} has created a new ticket ${tChannel}`);
                 ticketLogChannel.send({ content: `__Notification:__ @here`, embeds: [ticketLog] })
 
@@ -78,8 +78,7 @@ module.exports = {
 
                 ticketLog.setDescription(`${interaction.user} has been locked the ${interaction.channel} (${interaction.channel.name})`);
 
-                await interaction.channel.setName('closed');
-                console.log(interaction.channel.name);
+                await interaction.channel.setName(interaction.channel.name.replace('ticket', 'closed'));
                 await interaction.channel.permissionOverwrites.set([
                     {
                         id: interaction.guild.id,
@@ -113,7 +112,6 @@ module.exports = {
                     components: [row1]
                 });
                 ticketLogChannel.send({ embeds: [ticketLog] });
-                await interaction.deferUpdate();
                 break;
 
 
