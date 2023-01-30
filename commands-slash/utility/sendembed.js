@@ -2,7 +2,7 @@ const { SlashCommandBuilder, PermissionsBitField, EmbedBuilder } = require("disc
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('send-embed')
+        .setName('sendembed')
         .setDescription('send embed to a specific channel')
         .setDefaultMemberPermissions(PermissionsBitField.Flags.ManageMessages)
         .addChannelOption(option =>
@@ -11,56 +11,72 @@ module.exports = {
                 .setRequired(true))
         .addStringOption(option =>
             option.setName('title')
-                .setDescription('Title of the embed')
-                .setRequired(true))
+                .setDescription('Title of the embed'))
         .addStringOption(option =>
             option.setName('description')
-                .setDescription('Description of the embed')
-                .setRequired(true))
+                .setDescription('Description of the embed'))
         .addStringOption(option =>
             option.setName('footer')
-                .setDescription('Footer of the embed')
-                .setRequired(true))
+                .setDescription('Footer of the embed'))
         .addStringOption(option =>
             option.setName('color')
-                .setDescription('Color of the embed')
-                .setRequired(true))
+                .setDescription('Color of the embed'))
         .addStringOption(option =>
             option.setName('author')
-                .setDescription('Author of the embed')
-                .setRequired(true))
+                .setDescription('Author of the embed'))
         .addStringOption(option =>
             option.setName('image')
-                .setDescription('Image of the embed')
-                .setRequired(true))
+                .setDescription('Image of the embed'))
         .addStringOption(option =>
             option.setName('thumbnail')
-                .setDescription('Thumbnail of the embed')
-                .setRequired(true))
+                .setDescription('Thumbnail of the embed'))
         .addStringOption(option =>
             option.setName('timestamp')
                 .setDescription('TimeStamp of the embed')
-                .setAutocomplete(true)
-                .setRequired(true))
+                .setAutocomplete(true))
         .addStringOption(option =>
-            option.setName('field1')
-                .setDescription('1st Field of the embed'))
+            option.setName('field_name_1')
+                .setDescription('name - 1st Field of the embed'))
         .addStringOption(option =>
-            option.setName('field2')
-                .setDescription('2nd Field of the embed'))
+            option.setName('field_value_1')
+                .setDescription('value - 1st Field of the embed'))
         .addStringOption(option =>
-            option.setName('field3')
-                .setDescription('3rd Field of the embed'))
+            option.setName('field_name_2')
+                .setDescription('name - 2nd Field of the embed'))
         .addStringOption(option =>
-            option.setName('field4')
-                .setDescription('4th Field of the embed')),
+            option.setName('field_value_2')
+                .setDescription('value - 2nd Field of the embed'))
+        .addStringOption(option =>
+            option.setName('field_name_3')
+                .setDescription('name - 3rd Field of the embed'))
+        .addStringOption(option =>
+            option.setName('field_value_3')
+                .setDescription('value - 3rd Field of the embed'))
+        .addStringOption(option =>
+            option.setName('field_name_4')
+                .setDescription('name - 4th Field of the embed'))
+        .addStringOption(option =>
+            option.setName('field_value_4')
+                .setDescription('value - 4th Field of the embed'))
+        .addStringOption(option =>
+            option.setName('field_name_5')
+                .setDescription('name - 5th Field of the embed'))
+        .addStringOption(option =>
+            option.setName('field_value_5')
+                .setDescription('value - 5th Field of the embed'))
+        .addStringOption(option =>
+            option.setName('field_name_6')
+                .setDescription('name - 6th Field of the embed'))
+        .addStringOption(option =>
+            option.setName('field_value_6')
+                .setDescription('value - 6th Field of the embed')),
 
     async autocomplete(interaction) {
         const focusedOption = interaction.options.getFocused(true);
         let choices;
 
         if (focusedOption.name === 'timestamp') {
-            choices = ['yes', 'no'];
+            choices = ['yes'];
         }
 
         const filtered = choices.filter(choice => choice.startsWith(focusedOption.value));
@@ -75,6 +91,9 @@ module.exports = {
         const title = interaction.options.getString('title');
         const description = interaction.options.getString('description');
         const footer = interaction.options.getString('footer');
+        const color = interaction.options.getString('color');
+        const author = interaction.options.getString('author');
+        const image = interaction.options.getString('image');
         const thumbnail = interaction.options.getString('thumbnail');
         const timestamp = interaction.options.getString('timestamp');
         const field_name_1 = interaction.options.getString('field_name_1');
@@ -85,7 +104,11 @@ module.exports = {
         const field_value_3 = interaction.options.getString('field_value_3');
         const field_name_4 = interaction.options.getString('field_name_4');
         const field_value_4 = interaction.options.getString('field_value_4');
-        let field;
+        const field_name_5 = interaction.options.getString('field_name_5');
+        const field_value_5 = interaction.options.getString('field_value_5');
+        const field_name_6 = interaction.options.getString('field_name_6');
+        const field_value_6 = interaction.options.getString('field_value_6');
+        let field = [];
 
         const embed = new EmbedBuilder();
 
@@ -96,7 +119,16 @@ module.exports = {
             embed.setDescription(description);
         }
         if (footer) {
-            embed.setFooter({ text: footer, iconURL: client.user.displayAvatarURL() });
+            embed.setFooter({ text: footer, iconURL: interaction.guild.members.me.user.displayAvatarURL() });
+        }
+        if (author) {
+            embed.setAuthor({ name: footer, iconURL: interaction.user.displayAvatarURL() });
+        }
+        if (color) {
+            embed.setColor(color);
+        }
+        if (image) {
+            embed.setImage(image);
         }
         if (thumbnail) {
             embed.setThumbnail(thumbnail);
@@ -116,10 +148,17 @@ module.exports = {
         if (field_name_4 && field_value_4) {
             field.push({ name: field_name_4, value: field_value_4 });
         }
+        if (field_name_5 && field_value_5) {
+            field.push({ name: field_name_5, value: field_value_5 });
+        }
+        if (field_name_6 && field_value_6) {
+            field.push({ name: field_name_6, value: field_value_6 });
+        }
         if (field.length > 0) {
             embed.addFields(field);
         }
 
-        channel.send({ embeds: [embed] })
+        channel.send({ embeds: [embed] });
+        interaction.reply({ content: `Your message sent to ${channel}`, ephemeral: true });
     }
-}
+};

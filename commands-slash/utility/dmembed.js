@@ -1,7 +1,7 @@
 const { SlashCommandBuilder, PermissionsBitField } = require("discord.js");
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('dm-embed')
+        .setName('dmembed')
         .setDescription('dm embed to a guild user')
         .setDefaultMemberPermissions(PermissionsBitField.Flags.Administrator),
 

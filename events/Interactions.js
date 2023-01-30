@@ -1,12 +1,12 @@
 const { Events, ChannelType, PermissionsBitField, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
-
+const db = require('quick.db');
 
 module.exports = {
     name: Events.InteractionCreate,
     once: false,
     async execute(interaction, client) {
         if (!interaction.isButton()) return;
-        const db = require('quick.db');
+
         const ticketLogChannel = interaction.guild.channels.cache.get(await db.get(`TicketLogsChannel_${interaction.guild.id}`));
         const ticketLog = new EmbedBuilder()
             .setTitle('Ticket Logs')
@@ -17,8 +17,6 @@ module.exports = {
         switch (interaction.customId) {
 
             case 'createTicket':
-                db.delete(`TicketNumber_${interaction.guild.id}`);
-                db.delete(`TicketNumber_${interaction.guild.id}`);
                 let ticketId = await db.get(`TicketNumber_${interaction.guild.id}`);
                 let ticket_num = ("000" + ticketId).slice(-4);
                 await db.set(`TicketNumber_${interaction.guild.id}`, ++ticketId);
@@ -47,6 +45,18 @@ module.exports = {
                         ],
                     }
                 );
+                await db.set(`tickets_${tChannel.id}`, {
+                    id: ticketId,
+                    creator: interaction.user.id,
+                    invited: [],
+                    createdAt: new Date(),
+                    claimed: false,
+                    claimedBy: null,
+                    claimedAt: null,
+                    closed: false,
+                    closedBy: null,
+                    closedAt: null
+                });
 
                 ticketLog.setDescription(`${interaction.user} has created a new ticket ${tChannel}`);
                 ticketLogChannel.send({ content: `__Notification:__ @here`, embeds: [ticketLog] })
@@ -71,47 +81,78 @@ module.exports = {
 
 
             case 'closeTicket':
-                ticketLog.setDescription(`${interaction.user} has been locked the ${interaction.channel} (${interaction.channel.name})`);
+                const tClosed = await db.get(`tickets_${interaction.channel.id}.closed`);
 
-                await interaction.channel.setName(interaction.channel.name.replace('ticket', 'closed'));
-                await interaction.channel.permissionOverwrites.set([
-                    {
-                        id: interaction.guild.id,
-                        allow: [],
-                        deny: [PermissionsBitField.Flags.SendMessages, PermissionsBitField.Flags.ViewChannel],
-                    },
-                    {
-                        id: interaction.guild.roles.cache.find((r) => r.name === 'Moderator'),
-                        allow: [PermissionsBitField.Flags.SendMessages, PermissionsBitField.Flags.ViewChannel],
-                        deny: [],
-                    },
-                ]);
-                const row1 = new ActionRowBuilder()
-                    .addComponents(
-                        new ButtonBuilder()
-                            .setCustomId('openTicket')
-                            .setEmoji('🔓')
-                            .setLabel('Open')
-                            .setStyle(ButtonStyle.Secondary),
-                        new ButtonBuilder()
-                            .setCustomId('deleteTicket')
-                            .setEmoji('⛔')
-                            .setLabel('Delete')
-                            .setStyle(ButtonStyle.Secondary),
-                    )
-                interaction.channel.send({
-                    embeds: [new EmbedBuilder()
-                        .setColor('Yellow')
-                        .setDescription(`Ticket closed by ${interaction.user}`)],
-                    content: '```Support team ticket controls```',
-                    components: [row1]
-                });
-                ticketLogChannel.send({ embeds: [ticketLog] });
-                await interaction.deferUpdate();
+                if (tClosed == true) {
+                    interaction.reply({ content: '>>> **Warning**: ticket already closed', ephemeral: true });
+                }
+                else if (tClosed == false) {
+                    await db.set(`tickets_${interaction.channel.id}.closed`, true);
+                    await db.set(`tickets_${interaction.channel.id}.closedBy`, interaction.user.id);
+                    await db.set(`tickets_${interaction.channel.id}.closedAt`, new Date());
+
+                    ticketLog.setDescription(`${interaction.user} has been locked the ${interaction.channel} (${interaction.channel.name})`);
+
+                    await interaction.channel.setName(interaction.channel.name.replace('ticket', 'closed'));
+                    await interaction.channel.permissionOverwrites.set([
+                        {
+                            id: interaction.guild.id,
+                            allow: [],
+                            deny: [PermissionsBitField.Flags.SendMessages, PermissionsBitField.Flags.ViewChannel],
+                        },
+                        {
+                            id: interaction.guild.roles.cache.find((r) => r.name === 'Moderator'),
+                            allow: [PermissionsBitField.Flags.SendMessages, PermissionsBitField.Flags.ViewChannel],
+                            deny: [],
+                        },
+                    ]);
+                    const row1 = new ActionRowBuilder()
+                        .addComponents(
+                            new ButtonBuilder()
+                                .setCustomId('openTicket')
+                                .setEmoji('🔓')
+                                .setLabel('Open')
+                                .setStyle(ButtonStyle.Secondary),
+                            new ButtonBuilder()
+                                .setCustomId('deleteTicket')
+                                .setEmoji('⛔')
+                                .setLabel('Delete')
+                                .setStyle(ButtonStyle.Secondary),
+                        )
+                    await interaction.channel.send({
+                        embeds: [new EmbedBuilder()
+                            .setColor('Yellow')
+                            .setDescription(`Ticket closed by ${interaction.user}`)]
+                    });
+                    interaction.channel.send({ content: '```Support team ticket controls```', components: [row1] }).then((closeMsg) =>
+                        db.set(`tickets_${interaction.channel.id}.closeMsg`, closeMsg.id));
+
+                    ticketLogChannel.send({ embeds: [ticketLog] });
+                    await interaction.deferUpdate();
+                };
                 break;
 
 
+            case 'openTicket':
+                await interaction.channel.permissionOverwrites.edit(await db.get(`tickets_${interaction.channel.id}.creator`), { ViewChannel: true, SendMessages: true });
+                await db.set(`tickets_${interaction.channel.id}.closed`, false);
+                await db.set(`tickets_${interaction.channel.id}.closedBy`, null);
+                await db.set(`tickets_${interaction.channel.id}.closedAt`, null);
+
+                interaction.channel.messages.fetch({ message: await db.get(`tickets_${interaction.channel.id}.closeMsg`) }).then((msg) => msg.delete());
+
+                await interaction.channel.send({
+                    embeds: [new EmbedBuilder()
+                        .setColor('Green')
+                        .setDescription(`Ticket opened by ${interaction.user}`)]
+                });
+
+
             case 'deleteTicket':
+                const tClose = await db.get(`tickets_${interaction.channel.id}.closed`);
+
+                if (tClose !== true) return;
+
                 let i = 10;
                 ticketLog.setDescription(`${interaction.user} has been deleted the **${interaction.channel.name}**`);
                 interaction.reply(`This channel will delete in ${i} seconds`)
@@ -128,7 +169,7 @@ module.exports = {
                 break;
         }
     }
-}
+};
 
 
 /*
