@@ -1,5 +1,7 @@
 const { SlashCommandBuilder, PermissionsBitField, EmbedBuilder } = require("discord.js");
-const { execute } = require("../utility/sendembed");
+const db = require('quick.db');
+const { deleteDBItem } = require("../../utils/utils.js");
+const utils = require('../../utils/utils.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -19,6 +21,16 @@ module.exports = {
             .setDescription(`${user} was removed from this ticket`)
 
         interaction.channel.permissionOverwrites.delete(user.id);
-        interaction.channel.send({ embeds: [embed] });
+        await deleteDBItem(await db.get(`tickets_${interaction.channel.id}.invited`), user.id)
+            .then((newInvited) => {
+                db.set(`tickets_${interaction.channel.id}.invited`, newInvited);
+                interaction.channel.send({ embeds: [embed] });
+                interaction.reply({ content: 'DONE', ephemeral: true });
+            })
+            .catch(err => {
+                interaction.reply({ content: 'NOT FOUND', ephemeral: true });
+            }
+            );
+
     }
 };
