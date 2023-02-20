@@ -1,11 +1,14 @@
 const { EmbedBuilder } = require("discord.js");
-const { text } = require('../buttons/verify.js');
+const { captchaText } = require('../buttons/verify.js');
 
 module.exports = {
     data: {
         name: 'verify-captcha'
     },
     async execute(interaction, client) {
+        const input = interaction.fields.getTextInputValue('captcha');
+        console.log(input)
+        console.log(captchaText)
         let captchaCorrect = new EmbedBuilder()
             .setTitle("✅ CAPTCHA Solved!")
             .setDescription(`${interaction.user}, you completed the CAPTCHA successfully, and you have been given access to **${member.guild.name}**!`)
@@ -20,7 +23,7 @@ module.exports = {
             .setColor("Red")
             .setThumbnail(interaction.guild.iconURL({ dynamic: true }));
 
-        if (text === interaction.fields.getTextInputValue('captcha')) {
+        if (input == captchaText) {
             interaction.reply({ embeds: [captchaCorrect], ephemeral: true });
         } else {
             interaction.reply({ embeds: [captchaIncorrect], ephemeral: true });
