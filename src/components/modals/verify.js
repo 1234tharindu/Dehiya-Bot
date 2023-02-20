@@ -6,9 +6,7 @@ module.exports = {
     },
     async execute(interaction, client) {
         const input = interaction.fields.getTextInputValue('captcha');
-        const { captchaText } = require('../buttons/verify.js').text;
-        console.log(input)
-        console.log(captchaText)
+        const { captchaText } = h;
 
 
         if (input == captchaText) {

@@ -8,8 +8,7 @@ module.exports = {
     },
     async execute(interaction, client) {
         const myCaptcha = await createCaptcha(8, "");
-        module.exports = { myCaptcha }
-        const attachment = new AttachmentBuilder(await myCaptcha.image, { name: 'captcha-image.png' })
+        const attachment = new AttachmentBuilder(await myCaptcha.image, { name: 'captcha-image.png' });
         let x = 60;
 
         let embed = new EmbedBuilder()
