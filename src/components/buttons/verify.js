@@ -1,6 +1,6 @@
 const { ButtonBuilder } = require("@discordjs/builders")
 const { EmbedBuilder, ButtonStyle, ActionRowBuilder, AttachmentBuilder } = require("discord.js")
-const { createCaptcha } = require("discord.js-captcha");
+const createCaptcha = require('../../functions/tools/createCaptcha.js');
 
 module.exports = {
     data: {
