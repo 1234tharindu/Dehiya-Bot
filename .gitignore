@@ -1,5 +1,4 @@
 node_modules
+json.sqlite
 .env
-CHANGES.txt
-backups.old
-giveaways.json
+.gitignore
