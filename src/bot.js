@@ -54,3 +54,6 @@ client.handleCommands();
 client.handleComponents();
 
 client.login(process.env.TOKEN);
+
+set('strictQuery', true);
+connect(process.env.MONGOURL);

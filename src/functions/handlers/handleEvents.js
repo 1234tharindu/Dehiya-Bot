@@ -18,9 +18,6 @@ module.exports = (client) => {
                         break;
 
                     case 'database':
-                        const mongoose = require('mongoose');
-                        mongoose.set('strictQuery', true);
-                        mongoose.connect(process.env.MONGOURL);
                         if (event.once) connection.once(event.name, (...args) => event.execute(...args, client));
                         else connection.on(event.name, (...args) => event.execute(...args, client));
                         break;
