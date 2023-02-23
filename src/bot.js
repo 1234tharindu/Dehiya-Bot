@@ -54,3 +54,4 @@ client.handleCommands();
 client.handleComponents();
 
 client.login(process.env.TOKEN);
+connect(process.env.MONGOURL);
