@@ -1,3 +1,9 @@
+const { set, connect } = require('mongoose');
+
+set('strictQuery', true);
+connect(process.env.MONGOURL);
+console.log(process.env.MONGOURL);
+
 module.exports = {
     name: "connecting",
     execute() {
