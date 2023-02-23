@@ -16,10 +16,10 @@ module.exports = (client) => {
         }
         const rest = new REST({ version: '10' }).setToken(process.env.TOKEN);
         try {
-            console.log(`\x1B[33mStarted refreshing application (/) Commands...\x1B[39m`);
+            console.log(`\x1B[93mStarted refreshing application (/) Commands...\x1B[39m`);
 
             await rest.put(Routes.applicationCommands(client.config.clientId), { body: commandsArray });
-            console.log(`\x1B[32mSuccessfully reloadeded ${commandsArray.length} application (/) Commands\x1B[39m`);
+            console.log(`\x1B[92mSuccessfully reloadeded ${commandsArray.length} application (/) Commands\x1B[39m`);
 
         } catch (err) {
             console.log(err);

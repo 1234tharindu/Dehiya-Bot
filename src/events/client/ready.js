@@ -7,7 +7,7 @@ module.exports = {
   async execute(client) {
     client.guilds.fetch(client.config.guildId).then(async (guild) => {
       client.user.setStatus("idle");
-      console.log(`\x1B[38;5;45m\x1B[1mReady ${client.user.tag} is logged in and online\x1B[0m\x1B[39m`);
+      console.log(`\x1B[94m\x1B[1mReady ${client.user.tag} is logged in and online ☑️\x1B[0m\x1B[39m`);
       const logchannel = await client.db.get(`ErrorLoggingChannel_${guild.id}`);
       client.channels.cache.get('1020701827869716501').send({
         embeds: [
