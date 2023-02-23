@@ -6,7 +6,7 @@ module.exports = {
     },
     async execute(interaction, client) {
         const input = interaction.fields.getTextInputValue('captcha');
-        const { captchaText } = h;
+        const captchaText = await db.get(`verified_${interaction.guild.id}.${interaction.user.id}.text`);
 
 
         if (input == captchaText) {
@@ -16,6 +16,7 @@ module.exports = {
                 .setTimestamp()
                 .setColor("Green")
                 .setThumbnail(interaction.guild.iconURL({ dynamic: true }));
+            await db.set(`verified_${interaction.guild.id}.${interaction.user.id}verified`, true)
             interaction.reply({ embeds: [captchaCorrect], ephemeral: true });
         } else {
             let captchaIncorrect = new EmbedBuilder()
