@@ -11,7 +11,7 @@ app.listen(port, () =>
 require('dotenv').config();
 const { Client, Collection, GatewayIntentBits } = require('discord.js');
 const { readdirSync } = require('fs');
-const { connect } = require('mongoose');
+const { connect, set } = require('mongoose');
 
 const client = new Client({
     intents: [
@@ -50,9 +50,10 @@ for (const folder of functionsFolders) {
 };
 
 client.handleEvents();
-client.handleErrors();
 client.handleCommands();
 client.handleComponents();
 
 client.login(process.env.TOKEN);
+
+set('strictQuery', true);
 connect(process.env.MONGOURL);

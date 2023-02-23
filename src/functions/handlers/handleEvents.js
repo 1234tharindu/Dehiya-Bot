@@ -20,7 +20,6 @@ module.exports = (client) => {
                         if (event.once) connection.once(event.name, (...args) => event.execute(...args, client));
                         else connection.on(event.name, (...args) => event.execute(...args, client));
                         break;
-                        break;
 
                     case 'error':
                         if (event.once) process.once(event.name, (...args) => event.execute(...args, client));
