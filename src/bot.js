@@ -54,4 +54,9 @@ client.handleCommands();
 client.handleComponents();
 
 client.login(process.env.TOKEN);
-connect(process.env.MONGOURL);
+
+set('strictQuery', true);
+connect(process.env.MONGOURL, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+});
