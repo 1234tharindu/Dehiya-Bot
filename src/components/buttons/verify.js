@@ -8,14 +8,10 @@ module.exports = {
         name: 'verify'
     },
     async execute(interaction, client) {
-        if (interaction.member.roles.cache.has(r => r.name == "verfied")) {
+        if (interaction.member.roles.cache.has(r => r.name == "verified")) {
             return interaction.reply({ content: 'You have already verified !', ephemeral: true })
         }
         const myCaptcha = await createCaptcha(8, "");
-        await db.set(`verified_${interaction.guild.id}.${interaction.user.id}`, {
-            verified: false,
-            text: myCaptcha.text,
-        })
         const attachment = new AttachmentBuilder(await myCaptcha.image, { name: 'captcha-image.png' });
         let x = 60;
 
