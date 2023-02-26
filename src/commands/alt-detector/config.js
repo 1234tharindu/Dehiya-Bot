@@ -183,10 +183,10 @@ module.exports = {
 
         case 'verifychannel':
           const vchannel = interaction.options.getChannel('channel');
-          const preChannel = await db.get(`verifyChannel_${interaction.guild.id}`);
+          const preChannel = await client.db.get(`verifyChannel_${interaction.guild.id}`);
           if (preChannel) {
             interaction.guild.channels.cache.get(preChannel).messages
-              .fetch({ message: await db.get(`verifyMsg_${interaction.guild.id}`) })
+              .fetch({ message: await client.db.get(`verifyMsg_${interaction.guild.id}`) })
               .then(m => m.delete());
           }
 
