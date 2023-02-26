@@ -1,17 +1,17 @@
 const { ButtonBuilder } = require("discord.js");
 const { EmbedBuilder, ButtonStyle, ActionRowBuilder, AttachmentBuilder } = require("discord.js")
 const createCaptcha = require('../../functions/tools/createCaptcha.js');
-const db = require('quick.db').QuickDB;
 
 module.exports = {
     data: {
         name: 'verify'
     },
     async execute(interaction, client) {
-        if (interaction.member.roles.cache.has(r => r.name == "verified")) {
+        if (interaction.member.roles.cache.has(`${await client.db.get(`verifiedRole_${interaction.guild.id}`)}`)) {
             return interaction.reply({ content: 'You have already verified !', ephemeral: true })
         }
         const myCaptcha = await createCaptcha(8, "");
+        await client.db.set(`verified_${interaction.guild.id}${interaction.user.id}`, myCaptcha.text);
         const attachment = new AttachmentBuilder(await myCaptcha.image, { name: 'captcha-image.png' });
         let x = 60;
 

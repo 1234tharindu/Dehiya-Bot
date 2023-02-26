@@ -18,13 +18,11 @@ module.exports = (client) => {
                         break;
 
                     case 'database':
-                        if (event.once) connection.once(event.name, (...args) => event.execute(...args, client));
-                        else connection.on(event.name, (...args) => event.execute(...args, client));
+                        connection.on(event.name, (...args) => event.execute(...args));
                         break;
 
                     case 'error':
-                        if (event.once) process.once(event.name, (...args) => event.execute(...args, client));
-                        else process.on(event.name, (...args) => event.execute(...args, client));
+                        process.on(event.name, (...args) => event.execute(...args, client));
                         break;
 
                     default:

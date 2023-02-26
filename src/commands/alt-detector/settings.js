@@ -6,8 +6,9 @@ module.exports = {
         .setName('settings')
         .setDescription("shows settings"),
 
-    async execute(interaction) {
-        let logChannel = await client.db.get(`LoggingChannel_${interaction.guild.id}`)
+    async execute(interaction, client) {
+        const db = client;
+        let logChannel = await db.get(`LoggingChannel_${interaction.guild.id}`)
         let NotifyRole = await db.get(`notifyRole_${interaction.guild.id}`)
         let memberole = await db.get(`memberole_${interaction.guild.id}`)
         let verifiedRole = await db.get(`verifiedRole_${interaction.guild.id}`)

@@ -1,4 +1,3 @@
-const db = require("quick.db");
 const { PermissionsBitField, EmbedBuilder, SlashCommandBuilder, ActionRowBuilder, ButtonStyle, ButtonBuilder } = require("discord.js");
 
 module.exports = {
@@ -101,7 +100,8 @@ module.exports = {
   },
 
   async execute(interaction, client) {
-    // const logchannel = interaction.guild.channels.cache.get(db.get(`LoggingChannel_${interaction.guild.id}`));
+    const { db } = client;
+    const logchannel = interaction.guild.channels.cache.get(await db.get(`LoggingChannel_${interaction.guild.id}`));
     if (interaction.options.getSubcommand() && !interaction.options.getSubcommandGroup()) {
       switch (interaction.options.getSubcommand()) {
         case 'logchannel':
@@ -139,11 +139,11 @@ module.exports = {
 
 
         case 'ticketchannel':
-          const preTChannel = await client.db.get(`TicketChannel_${interaction.guild.id}`);
+          const preTChannel = await db.get(`TicketChannel_${interaction.guild.id}`);
           if (preTChannel) {
-            interaction.guild.channels.cache.get(preTChannel).messages.fetch({ message: db.get(`TicketMsg_${interaction.guild.id}`) }).then((m) => {
-              m.delete();
-            })
+            interaction.guild.channels.cache.get(preTChannel).messages
+              .fetch({ message: db.get(`TicketMsg_${interaction.guild.id}`) })
+              .then(m => m.delete())
           }
 
           const TicketChannel = interaction.options.getChannel('channel');
@@ -181,10 +181,12 @@ module.exports = {
 
         case 'verifychannel':
           const vchannel = interaction.options.getChannel('channel');
-          // const preChannel = await client.db.get(`verifyChannel_${interaction.guild.id}`);
-          // if (preChannel) {
-          //   interaction.guild.channels.cache.get(preChannel).messaged.fetch({ message: await client.db.get(`verifyMsg_${interaction.guild.id}`) })
-          // }
+          const preChannel = await client.db.get(`verifyChannel_${interaction.guild.id}`);
+          if (preChannel) {
+            interaction.guild.channels.cache.get(preChannel).messages
+              .fetch({ message: await client.db.get(`verifyMsg_${interaction.guild.id}`) })
+              .then(m => m.delete())
+          }
 
           const embed = new EmbedBuilder()
             .setTitle('🤖 Verification Required')
@@ -198,10 +200,10 @@ module.exports = {
             .setStyle(ButtonStyle.Success);
 
           vchannel.send({ embeds: [embed], components: [new ActionRowBuilder().addComponents(button)] })
-          // .then(async msg =>
-          //   await client.db.set(`verifyMsg_${interaction.guild.id}`, msg.id),
-          //   await client.db.set(`verifyChannel_${interaction.guild.id}`, vchannel.id)
-          // );
+            .then(async msg =>
+              await db.set(`verifyMsg_${interaction.guild.id}`, msg.id),
+              await db.set(`verifyChannel_${interaction.guild.id}`, vchannel.id)
+            );
           interaction.reply(`Verification message has been send to ${vchannel}`);
           break;
 
@@ -210,7 +212,7 @@ module.exports = {
           const TicketLogs = interaction.options.getChannel('channel');
           db.set(`TicketLogsChannel_${interaction.guild.id}`, TicketLogs.id);
           const ticketLogSuccess = new EmbedBuilder()
-            .setTitle(`Ticket Logging Channel has been Setted!`)
+            .setTitle(`Ticket Logging Channel has been set`)
             .setThumbnail(interaction.guild.iconURL())
             .setFooter({ text: "Bot Made By ! Chirath#5959" })
             .setTimestamp()
@@ -227,7 +229,7 @@ module.exports = {
           const notifyRole = interaction.options.getRole('role');
           db.set(`notifyRole_${interaction.guild.id}`, notifyRole.id);
           const notifySuccess = new EmbedBuilder()
-            .setTitle(`Alt Notify Role has been setted`)
+            .setTitle(`Alt Notify Role has been set`)
             .setThumbnail(interaction.guild.iconURL())
             .setFooter({ text: "Bot Made By ! Chirath#5959" })
             .setColor('Yellow')
@@ -243,7 +245,7 @@ module.exports = {
           const memberRole = interaction.options.getRole('role');
           db.set(`memberRole_${interaction.guild.id}`, memberRole.id);
           const membroleSuccess = new EmbedBuilder()
-            .setTitle(`Alt Notify Role has been setted`)
+            .setTitle(`Alt Member Role has been setted`)
             .setThumbnail(interaction.guild.iconURL())
             .setFooter({ text: "Bot Made By ! Chirath#5959" })
             .setColor('Yellow')
@@ -257,9 +259,9 @@ module.exports = {
 
         case 'verifiedrole':
           const verifiedRole = interaction.options.getRole('role');
-          db.set(`notifyRole_${interaction.guild.id}`, verifiedRole.id);
+          db.set(`verifiedRole_${interaction.guild.id}`, verifiedRole.id);
           const verifySuccess = new EmbedBuilder()
-            .setTitle(`Alt Notify Role has been setted`)
+            .setTitle(`Alt Verified Role has been setted`)
             .setThumbnail(interaction.guild.iconURL())
             .setFooter({ text: "Bot Made By ! Chirath#5959" })
             .setColor('Yellow')

@@ -1,5 +1,4 @@
 const { PermissionsBitField, EmbedBuilder, SlashCommandBuilder, ChannelType } = require("discord.js");
-const db = require("quick.db");
 let cooldown = new Set();
 
 module.exports = {
@@ -8,7 +7,8 @@ module.exports = {
     .setDescription("autosetup the bot")
     .setDefaultMemberPermissions(PermissionsBitField.Flags.ManageGuild),
 
-  async execute(interaction) {
+  async execute(interaction, client) {
+    const { db } = client;
 
     if (cooldown.has(interaction.user.id)) {
       interaction.reply({ embed: { color: "#10de47", description: `**You need to wait __${config.COOLDOWN}__ minutes to use this command again!**` }, ephemeral: true });
@@ -58,11 +58,9 @@ module.exports = {
             })
 
             let LoggingChannel = client.channels.cache.find(x => x.name === "alt-logging")
-            await db.delete(`LoggingChannel_${interaction.guild.id}`)
             await db.set(`LoggingChannel_${interaction.guild.id}`, LoggingChannel.id)
 
             let notifyRole = interaction.guild.roles.cache.find(role => role.name === "alt-notify")
-            await db.delete(`notifyRole_${interaction.guild.id}`)
             await db.set(`notifyRole_${interaction.guild.id}`, notifyRole)
             interaction.reply({ comtent: 'done', allowedMentions: { repliedUser: false } })
             let AutoSetupEmbed = new EmbedBuilder()

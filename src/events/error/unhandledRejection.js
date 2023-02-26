@@ -1,17 +1,16 @@
 const { EmbedBuilder } = require('discord.js');
-const db = require('quick.db').QuickDB;
 
 module.exports = {
     name: "unhandledRejection",
-    async execute() {
-        let ErrorLoggingChannel = await db.get(`ErrorLoggingChannel_${guildId}`);
+    async execute(reason, promise, client) {
+        let ErrorLoggingChannel = await client.db.get(`ErrorLoggingChannel_${client.config.guildId}`);
         if (!ErrorLoggingChannel)
             return console.log(
                 `Setup Is Not Done in ${guild} aka ${guild} Guild (channel not found)`
             );
 
         console.log(
-            "[FATAL] Possibly Unhandled Rejection at: Promise ",
+            "[FATAL] Possibly Unhandled Rejection at: ",
             promise,
             " reason: ",
             reason.message
@@ -24,6 +23,8 @@ module.exports = {
                 { name: "Reason", value: `${reason.message}` }
             ])
             .setColor("Red");
-        client.channels.cache.get('1020701827869716501').send({ embeds: [rejectionembed] });
+        setTimeout(() => {
+            client.channels.cache.get(ErrorLoggingChannel).send({ embeds: [rejectionembed] });
+        }, 5000);
     },
 }
