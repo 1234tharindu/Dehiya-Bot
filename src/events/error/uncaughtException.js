@@ -3,7 +3,7 @@ const { EmbedBuilder } = require('discord.js');
 module.exports = {
     name: "uncaughtException",
     async execute(err, client) {
-        console.log("Uncaught Exception:\n", err);
+        console.error("Uncaught Exception:\n", err);
 
         let ErrorLoggingChannel = await client.db.get(`ErrorLoggingChannel_${client.config.guildId}`);
         if (!ErrorLoggingChannel)

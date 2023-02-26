@@ -9,6 +9,8 @@ module.exports = {
         const captchaText = await client.db.get(`verified_${interaction.guild.id}${interaction.user.id}`);
 
         if (input == captchaText) {
+            const role = await interaction.guild.roles.cache
+                .find(async r => r.id = await client.db.get(`verifiedRole_${interaction.user.id}`));
             let captchaCorrect = new EmbedBuilder()
                 .setTitle("✅ CAPTCHA Solved!")
                 .setDescription(`${interaction.user}, you completed the CAPTCHA successfully, and you have been given access to **${interaction.guild.name}**!`)
@@ -16,13 +18,13 @@ module.exports = {
                 .setColor("Green")
                 .setThumbnail(interaction.guild.iconURL({ dynamic: true }));
 
-            await interaction.member.roles.add(await client.db.get(`verifiedRole_${interaction.user.id}`));
+            await interaction.member.roles.add(role);
             interaction.reply({ embeds: [captchaCorrect], ephemeral: true });
 
         } else {
             let captchaIncorrect = new EmbedBuilder()
                 .setTitle("❌ You Failed to Complete the CAPTCHA!")
-                .setDescription(`${interaction.user}, you failed to solve the CAPTCHA!\n\nCAPTCHA Text: **${text}**`)
+                .setDescription(`${interaction.user}, you failed to solve the CAPTCHA!\n\nCAPTCHA Text: **${captchaText}**`)
                 .setTimestamp()
                 .setColor("Red")
                 .setThumbnail(interaction.guild.iconURL({ dynamic: true }));

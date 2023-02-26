@@ -7,7 +7,7 @@ module.exports = {
         name: 'verify'
     },
     async execute(interaction, client) {
-        if (interaction.member.roles.cache.has(`${await client.db.get(`verifiedRole_${interaction.guild.id}`)}`)) {
+        if (interaction.member.roles.cache.has(await client.db.get(`verifiedRole_${interaction.guild.id}`))) {
             return interaction.reply({ content: 'You have already verified !', ephemeral: true })
         }
         const myCaptcha = await createCaptcha(8, "");
