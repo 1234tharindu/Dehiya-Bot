@@ -7,8 +7,8 @@ module.exports = {
     async execute(interaction, client) {
         const input = interaction.fields.getTextInputValue('captcha');
         const captchaText = await client.db.get(`verified_${interaction.guild.id}${interaction.user.id}`);
-        await interaction.guild.channels.cache.get(await db.get(`verifyChannel_${interaction.guild.id}`)).messages
-            .fetch({ message: await db.get(`verifyMsg_${interaction.guild.id}`) })
+        await interaction.guild.channels.cache.get(await client.db.get(`verifyChannel_${interaction.guild.id}`)).messages
+            .fetch({ message: await client.db.get(`verifyMsg_${interaction.guild.id}`) })
             .then(m => m.edit({ content: '', components: [], ephemeral: true }));
 
         if (input == captchaText) {
