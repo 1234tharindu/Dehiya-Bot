@@ -100,7 +100,7 @@ module.exports = {
   },
 
   async execute(interaction, client) {
-    const { db } = client;
+    const db = client.db;
     const logchannel = interaction.guild.channels.cache.get(await db.get(`LoggingChannel_${interaction.guild.id}`));
     if (interaction.options.getSubcommand() && !interaction.options.getSubcommandGroup()) {
       switch (interaction.options.getSubcommand()) {
@@ -183,10 +183,10 @@ module.exports = {
 
         case 'verifychannel':
           const vchannel = interaction.options.getChannel('channel');
-          const preChannel = await client.db.get(`verifyChannel_${interaction.guild.id}`);
+          const preChannel = await db.get(`verifyChannel_${interaction.guild.id}`);
           if (preChannel) {
             interaction.guild.channels.cache.get(preChannel).messages
-              .fetch({ message: await client.db.get(`verifyMsg_${interaction.guild.id}`) })
+              .fetch({ message: await db.get(`verifyMsg_${interaction.guild.id}`) })
               .then(m => m.delete());
           }
 
