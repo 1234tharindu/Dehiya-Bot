@@ -1,4 +1,4 @@
-const { EmbedBuilder } = require("discord.js");
+const { EmbedBuilder, ActionRowBuilder } = require("discord.js");
 
 module.exports = {
     data: {
@@ -7,9 +7,9 @@ module.exports = {
     async execute(interaction, client) {
         const input = interaction.fields.getTextInputValue('captcha');
         const captchaText = await client.db.get(`verified_${interaction.guild.id}${interaction.user.id}`);
-        await interaction.guild.channels.cache.get(await client.db.get(`verifyChannel_${interaction.guild.id}`)).messages
+        await interaction.channel.messages
             .fetch({ message: await client.db.get(`verifyMsg_${interaction.guild.id}`) })
-            .then(m => m.edit({ content: '', components: [], ephemeral: true }));
+            .then(m => m.edit({ content: '', components: [new ActionRowBuilder()], ephemeral: true }));
 
         if (input == captchaText) {
             const role = await interaction.guild.roles.cache

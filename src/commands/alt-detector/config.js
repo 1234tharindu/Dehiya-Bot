@@ -142,7 +142,7 @@ module.exports = {
           const preTChannel = await db.get(`TicketChannel_${interaction.guild.id}`);
           if (preTChannel) {
             interaction.guild.channels.cache.get(preTChannel).messages
-              .fetch({ message: db.get(`TicketMsg_${interaction.guild.id}`) })
+              .fetch({ message: await db.get(`TicketMsg_${interaction.guild.id}`) })
               .then(m => m.delete())
           }
 
