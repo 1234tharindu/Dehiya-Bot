@@ -29,7 +29,8 @@ module.exports = {
                     .setCustomId('verify-answer')
                     .setStyle(ButtonStyle.Primary)
             )
-        await interaction.reply({ embeds: [embed], components: [button], files: [attachment], ephemeral: true });
+        await interaction.reply({ embeds: [embed], components: [button], files: [attachment], ephemeral: true })
+            .then(msg => client.db.set(`verifyTemp_${interaction.guild.id}`, msg.id))
 
         let timeout = setInterval(async () => {
             embed.setFooter({ text: `Time Left: ${x--}s`, iconURL: client.user.displayAvatarURL() });
