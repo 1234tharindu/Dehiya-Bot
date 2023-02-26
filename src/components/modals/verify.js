@@ -7,10 +7,13 @@ module.exports = {
     async execute(interaction, client) {
         const input = interaction.fields.getTextInputValue('captcha');
         const captchaText = await client.db.get(`verified_${interaction.guild.id}${interaction.user.id}`);
+        await interaction.guild.channels.cache.get(await db.get(`verifyChannel_${interaction.guild.id}`)).messages
+            .fetch({ message: await db.get(`verifyMsg_${interaction.guild.id}`) })
+            .then(m => m.edit({ content: '', components: [], ephemeral: true }));
 
         if (input == captchaText) {
             const role = await interaction.guild.roles.cache
-                .find(async r => r.id = await client.db.get(`verifiedRole_${interaction.user.id}`));
+                .find(async r => r.id = await client.db.get(`verifiedRole_${interaction.guild.id}`));
             let captchaCorrect = new EmbedBuilder()
                 .setTitle("✅ CAPTCHA Solved!")
                 .setDescription(`${interaction.user}, you completed the CAPTCHA successfully, and you have been given access to **${interaction.guild.name}**!`)

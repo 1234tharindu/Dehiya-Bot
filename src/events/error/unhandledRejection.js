@@ -9,7 +9,7 @@ module.exports = {
                 `Setup Is Not Done in ${guild} aka ${guild} Guild (channel not found)`
             );
 
-        console.error(
+        console.log(
             "[FATAL] Possibly Unhandled Rejection at: ",
             promise,
             " reason: ",

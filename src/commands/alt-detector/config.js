@@ -147,7 +147,6 @@ module.exports = {
           }
 
           const TicketChannel = interaction.options.getChannel('channel');
-          db.set(`TicketChannel_${interaction.guild.id}`, TicketChannel.id);
           const ticketSuccess = new EmbedBuilder()
             .setTitle(`Ticket Channel has been Setted!`)
             .setThumbnail(interaction.guild.iconURL())
@@ -170,8 +169,11 @@ module.exports = {
                 .setLabel('Create ticket')
                 .setStyle(ButtonStyle.Secondary),
             )
-          const ticketMsg = await TicketChannel.send({ embeds: [ticket], components: [row] });
-          db.set(`TicketMsg_${interaction.guild.id}`, ticketMsg.id);
+          TicketChannel.send({ embeds: [ticket], components: [row] })
+            .then(async msg =>
+              await db.set(`TicketMsg_${interaction.guild.id}`, msg.id),
+              await db.set(`TicketChannel_${interaction.guild.id}`, TicketChannel.id)
+            )
           interaction.reply({ embeds: [ticketSuccess] });
           ticketSuccess
             .addFields({ name: `Requested by`, value: `${interaction.user}` })
@@ -181,11 +183,11 @@ module.exports = {
 
         case 'verifychannel':
           const vchannel = interaction.options.getChannel('channel');
-          const preChannel = await client.db.get(`verifyChannel_${interaction.guild.id}`);
+          const preChannel = await db.get(`verifyChannel_${interaction.guild.id}`);
           if (preChannel) {
             interaction.guild.channels.cache.get(preChannel).messages
-              .fetch({ message: await client.db.get(`verifyMsg_${interaction.guild.id}`) })
-              .then(m => m.delete())
+              .fetch({ message: await db.get(`verifyMsg_${interaction.guild.id}`) })
+              .then(m => m.delete());
           }
 
           const embed = new EmbedBuilder()
