@@ -15,7 +15,10 @@ module.exports = {
                 .setTimestamp()
                 .setColor("Green")
                 .setThumbnail(interaction.guild.iconURL({ dynamic: true }));
+
+            await interaction.member.roles.add(await client.db.get(`verifiedRole_${interaction.user.id}`));
             interaction.reply({ embeds: [captchaCorrect], ephemeral: true });
+
         } else {
             let captchaIncorrect = new EmbedBuilder()
                 .setTitle("❌ You Failed to Complete the CAPTCHA!")
@@ -24,7 +27,6 @@ module.exports = {
                 .setColor("Red")
                 .setThumbnail(interaction.guild.iconURL({ dynamic: true }));
             interaction.reply({ embeds: [captchaIncorrect], ephemeral: true });
-
         }
     }
 };
