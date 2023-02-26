@@ -1,4 +1,4 @@
-const { EmbedBuilder, ActionRowBuilder } = require("discord.js");
+const { EmbedBuilder, ActionRowBuilder, ButtonStyle } = require("discord.js");
 
 module.exports = {
     data: {
@@ -9,7 +9,7 @@ module.exports = {
         const captchaText = await client.db.get(`verified_${interaction.guild.id}${interaction.user.id}`);
         await interaction.channel.messages
             .fetch({ message: await client.db.get(`verifyMsg_${interaction.guild.id}`) })
-            .then(m => m.edit({ content: '', components: [new ActionRowBuilder()], ephemeral: true }));
+            .then(m => m.edit({ content: '', components: [], ephemeral: true }));
 
         if (input == captchaText) {
             const role = await interaction.guild.roles.cache
