@@ -1,7 +1,8 @@
 {
   "default_prefix": "c!",
-  "owners":"771639970854731808",
-  "clientId":"1035485726453805117",
+  "owners": "771639970854731808",
+  "clientId": "946983229674647552",
+  "#clientId": "1035485726453805117",
   "guildId": "885791620878983220",
   "staffChat": "916339886225772575",
   "ticketMsgId": "1040902840115265577",
@@ -19,10 +20,8 @@
     "queue": "📄",
     "success": "☑️",
     "repeat": "🔁",
-    "error": "❌" 
+    "error": "❌"
   },
-    "YOUTUBE_API_KEY": "AIzaSyBh3IuBJGuNTYp70xeMSUpOBMmW2S5gFSA",
-    "AME_API": "36d73cb74451722a36fe5321526fa29649bdc850444fea8269e6f21276ece44925ae934dd478a803886f53420dfe3e3498f7dc3d0380e278a60d2f50cdc92e72"
-   
- 
+  "YOUTUBE_API_KEY": "AIzaSyBh3IuBJGuNTYp70xeMSUpOBMmW2S5gFSA",
+  "AME_API": "36d73cb74451722a36fe5321526fa29649bdc850444fea8269e6f21276ece44925ae934dd478a803886f53420dfe3e3498f7dc3d0380e278a60d2f50cdc92e72"
 }
